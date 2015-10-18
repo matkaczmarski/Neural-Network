@@ -29,9 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.buttonGetInputFile = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -52,6 +53,7 @@
             this.buttonTrain = new System.Windows.Forms.Button();
             this.buttonTest = new System.Windows.Forms.Button();
             this.chartErrors = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.buttonLoadNetwork = new System.Windows.Forms.Button();
             this.tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMomentum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLearningRate)).BeginInit();
@@ -153,7 +155,7 @@
             this.comboBoxActivationFunction.Items.AddRange(new object[] {
             "unipolarna",
             "bipolarna"});
-            this.comboBoxActivationFunction.Location = new System.Drawing.Point(168, 328);
+            this.comboBoxActivationFunction.Location = new System.Drawing.Point(168, 329);
             this.comboBoxActivationFunction.Name = "comboBoxActivationFunction";
             this.comboBoxActivationFunction.Size = new System.Drawing.Size(121, 24);
             this.comboBoxActivationFunction.TabIndex = 13;
@@ -275,28 +277,45 @@
             // 
             // chartErrors
             // 
-            chartArea1.AxisX.Title = "Iteracje";
-            chartArea1.AxisY.Title = "Wartość błędu";
-            chartArea1.Name = "ChartArea1";
-            this.chartErrors.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chartErrors.Legends.Add(legend1);
-            this.chartErrors.Location = new System.Drawing.Point(389, 85);
+            chartArea2.AxisX.Title = "Iteracje";
+            chartArea2.AxisY.Title = "Wartość błędu";
+            chartArea2.Name = "ChartArea1";
+            this.chartErrors.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chartErrors.Legends.Add(legend2);
+            this.chartErrors.Location = new System.Drawing.Point(348, 85);
             this.chartErrors.Name = "chartErrors";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series1.Legend = "Legend1";
-            series1.Name = "Błędy";
-            this.chartErrors.Series.Add(series1);
-            this.chartErrors.Size = new System.Drawing.Size(477, 300);
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series3.Legend = "Legend1";
+            series3.Name = "Błędy test.";
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series4.Color = System.Drawing.Color.Red;
+            series4.Legend = "Legend1";
+            series4.Name = "Błędy walid.";
+            this.chartErrors.Series.Add(series3);
+            this.chartErrors.Series.Add(series4);
+            this.chartErrors.Size = new System.Drawing.Size(562, 300);
             this.chartErrors.TabIndex = 18;
             this.chartErrors.Text = "Błędy";
+            // 
+            // buttonLoadNetwork
+            // 
+            this.buttonLoadNetwork.Location = new System.Drawing.Point(189, 26);
+            this.buttonLoadNetwork.Name = "buttonLoadNetwork";
+            this.buttonLoadNetwork.Size = new System.Drawing.Size(137, 35);
+            this.buttonLoadNetwork.TabIndex = 19;
+            this.buttonLoadNetwork.Text = "Wczytaj sieć";
+            this.buttonLoadNetwork.UseVisualStyleBackColor = true;
+            this.buttonLoadNetwork.Click += new System.EventHandler(this.buttonLoadNetwork_Click);
             // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(943, 537);
+            this.Controls.Add(this.buttonLoadNetwork);
             this.Controls.Add(this.chartErrors);
             this.Controls.Add(this.buttonTest);
             this.Controls.Add(this.buttonTrain);
@@ -338,6 +357,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDownMomentum;
         private System.Windows.Forms.Button buttonTest;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartErrors;
+        private System.Windows.Forms.Button buttonLoadNetwork;
     }
 }
 

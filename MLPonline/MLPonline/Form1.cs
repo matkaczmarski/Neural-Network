@@ -25,6 +25,7 @@ namespace MLPonline
 {
     public partial class mainForm : Form
     {
+        private MLPNetwork mlpNetwork;
         private string inputDataFileName;
 
         public mainForm()
@@ -37,7 +38,8 @@ namespace MLPonline
             numericUpDownNeuronsCount.Maximum = Decimal.MaxValue;
             numericUpDownMomentum.Maximum = Decimal.MaxValue;
 
-            chartErrors.Series["Błędy"].Points.Clear();
+            chartErrors.Series["Błędy test."].Points.Clear();
+            chartErrors.Series["Błędy walid."].Points.Clear();
         }
 
         private void buttonGetInputFile_Click(object sender, EventArgs e)
@@ -71,25 +73,33 @@ namespace MLPonline
             double learningRate = Decimal.ToDouble(numericUpDownLearningRate.Value);
             double momentum = Decimal.ToDouble(numericUpDownMomentum.Value);
 
+            mlpNetwork = new MLPNetwork(layersCount, neuronsCount, checkBoxBias.Checked,comboBoxActivationFunction.Text == "bipolarna" ? ActivationFunctionType.Bipolar : ActivationFunctionType.Unipolar, inputDataFileName );
 
-            MLPNetwork mlpNetwork = new MLPNetwork(layersCount, neuronsCount, checkBoxBias.Checked,comboBoxActivationFunction.Text == "bipolarna" ? ActivationFunctionType.Bipolar : ActivationFunctionType.Unipolar, inputDataFileName );
+            double[][] errors = mlpNetwork.Train(iterationsCount, learningRate, momentum);
 
-            double[] errors = mlpNetwork.Train(iterationsCount, learningRate, momentum);
-            for (int i = 0; i < errors.Length; i++)
+            chartErrors.Series["Błędy test."].Points.Clear();
+            chartErrors.Series["Błędy walid."].Points.Clear();
+
+            for (int i = 0; i < errors[0].Length; i++)
             {
-                chartErrors.Series["Błędy"].Points.AddXY(i+1, errors[i]);
+                chartErrors.Series["Błędy test."].Points.AddXY(i + 1, errors[0][i]);
+                chartErrors.Series["Błędy walid."].Points.AddXY(i + 1, errors[1][i]);
             }
-            //zapis i wczytanie sieci
-           // EncogDirectoryPersistence.SaveObject(new FileInfo("network"), network);
-            //network = (BasicNetwork)EncogDirectoryPersistence.LoadObject(new FileInfo("FILENAME"));
-            
 
+            mlpNetwork.SaveNetwork("network");
+           
         }
 
 
 
         private void buttonTest_Click(object sender, EventArgs e)
         {
+            if(mlpNetwork == null)
+            {
+                MessageBox.Show("Brak sieci.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "CSV Files (.csv)|*.csv|All Files (*.*)|*.*";
             openFileDialog.FilterIndex = 1;
@@ -97,17 +107,29 @@ namespace MLPonline
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                //openFileDialog.FileName;
-                //testowanie sieci network
-                /*
-                Console.WriteLine(@"Neural Network Results:");
-                foreach (IMLDataPair pair in trainingSet)
+                mlpNetwork.Test(openFileDialog.FileName, "result.csv");
+            }
+        }
+
+        private void buttonLoadNetwork_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "All Files (*.*)|*.*";
+            openFileDialog.FilterIndex = 1;
+            openFileDialog.Multiselect = false;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                mlpNetwork = new MLPNetwork();
+                try
                 {
-                    IMLData output = network.Compute(pair.Input);
-                    Console.WriteLine(pair.Input[0] + @"," + pair.Input[1]
-                                      + @", actual=" + output[0] + @",ideal=" + pair.Ideal[0]);
+                    mlpNetwork.LoadNetwork(openFileDialog.FileName);
                 }
-                 * */
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    mlpNetwork = null;
+                }
             }
         }
     }
