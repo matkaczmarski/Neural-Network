@@ -26,15 +26,6 @@ namespace MLPonline
     public partial class mainForm : Form
     {
         private string inputDataFileName;
-        private int layersCount;
-        private int neuronsCount; //each layer
-        private int iterationsCount;
-        private double learningRate;
-        private double momentum;
-        bool bipolar;
-
-        private BasicNetwork network;
-
 
         public mainForm()
         {
@@ -74,88 +65,28 @@ namespace MLPonline
                 MessageBox.Show("Brak danych treningowych.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            layersCount = Decimal.ToInt32(numericUpDownLayersCount.Value);
-            neuronsCount = Decimal.ToInt32(numericUpDownNeuronsCount.Value);
-            iterationsCount = Decimal.ToInt32(numericUpDownIterationsCount.Value);
-            learningRate = Decimal.ToDouble(numericUpDownLearningRate.Value);
-            momentum = Decimal.ToDouble(numericUpDownMomentum.Value);
-            bipolar = comboBoxActivationFunction.Text == "bipolarna";
+            int layersCount = Decimal.ToInt32(numericUpDownLayersCount.Value);
+            int neuronsCount = Decimal.ToInt32(numericUpDownNeuronsCount.Value);
+            int iterationsCount = Decimal.ToInt32(numericUpDownIterationsCount.Value);
+            double learningRate = Decimal.ToDouble(numericUpDownLearningRate.Value);
+            double momentum = Decimal.ToDouble(numericUpDownMomentum.Value);
 
-            double[][] input;
-            double[][] ideal;
-            GetInputAndIdeal(inputDataFileName, out input, out ideal);
-            if(input.Length == 0)
-                MessageBox.Show("Błąd wczytania danych wejściowych.");
-            var data = new BasicMLDataSet(input, ideal);
 
-            network = new BasicNetwork();
-            network.AddLayer(new BasicLayer(null, checkBoxBias.Checked, input[0].Length));
-            if (bipolar)
-            {
-                for (int i = 0; i < layersCount; i++)
-                {
-                    network.AddLayer(new BasicLayer(new ActivationTANH(), checkBoxBias.Checked, neuronsCount));
-                }
-                network.AddLayer(new BasicLayer(new ActivationTANH(), false, 1));
-            }
-            else
-            {
-                for (int i = 0; i < layersCount; i++)
-                {
-                    network.AddLayer(new BasicLayer(new ActivationSigmoid(), checkBoxBias.Checked, neuronsCount));
-                }
-                network.AddLayer(new BasicLayer(new ActivationSigmoid(), false, 1));
-            }
-            network.Structure.FinalizeStructure();
-            network.Reset();
+            MLPNetwork mlpNetwork = new MLPNetwork(layersCount, neuronsCount, checkBoxBias.Checked,comboBoxActivationFunction.Text == "bipolarna" ? ActivationFunctionType.Bipolar : ActivationFunctionType.Unipolar, inputDataFileName );
 
-            IMLTrain train = new Backpropagation(network, data, learningRate, momentum);
-            double[] errors = new double[iterationsCount];
-            for(int i=0; i<iterationsCount; i++)
-            {
-                train.Iteration();
-                errors[i] = train.Error;
-            }
-            for (int i = 0; i < iterationsCount; i++)
+            double[] errors = mlpNetwork.Train(iterationsCount, learningRate, momentum);
+            for (int i = 0; i < errors.Length; i++)
             {
                 chartErrors.Series["Błędy"].Points.AddXY(i+1, errors[i]);
             }
             //zapis i wczytanie sieci
-            EncogDirectoryPersistence.SaveObject(new FileInfo("network"), network);
-            //network = (BasicNetwork)EncogDirectoryPersistence.LoadObject(new FileInfo("FILENAME"));            
+           // EncogDirectoryPersistence.SaveObject(new FileInfo("network"), network);
+            //network = (BasicNetwork)EncogDirectoryPersistence.LoadObject(new FileInfo("FILENAME"));
+            
+
         }
 
-        private void GetInputAndIdeal(string fileName, out double[][] input, out double[][] ideal)
-        {
-            List<double[]> inputList = new List<double[]>();
-            List<double[]> idealList = new List<double[]>();
-            using (StreamReader sr = new StreamReader(fileName))
-            {
-                string headerLine = sr.ReadLine();
-                int lineNumber = 1;
-                string line = string.Empty;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    lineNumber++;
-                    var splittedLine = line.Split(',');
-                    double[] lineData = new double[splittedLine.Length - 1];
-                    for(int j=0; j<lineData.Length; j++)
-                    {
-                        double a;
-                        if (!double.TryParse(splittedLine[j], out a))
-                            MessageBox.Show("Error parsing line: " + lineNumber);
-                        lineData[j] = a;
-                    }
-                    inputList.Add(lineData);
-                    double b;
-                    if (!double.TryParse(splittedLine[splittedLine.Length - 1], out b))
-                        MessageBox.Show("Error parsing line: " + lineNumber);
-                    idealList.Add(new double[] { b });
-                }
-            }
-            input = inputList.ToArray();
-            ideal = idealList.ToArray();
-        }
+
 
         private void buttonTest_Click(object sender, EventArgs e)
         {

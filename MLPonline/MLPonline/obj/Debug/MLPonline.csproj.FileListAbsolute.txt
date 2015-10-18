@@ -8,3 +8,13 @@ c:\users\mateusz\documents\visual studio 2013\Projects\MLPonline\MLPonline\obj\D
 c:\users\mateusz\documents\visual studio 2013\Projects\MLPonline\MLPonline\obj\Debug\MLPonline.csproj.GenerateResource.Cache
 c:\users\mateusz\documents\visual studio 2013\Projects\MLPonline\MLPonline\obj\Debug\MLPonline.exe
 c:\users\mateusz\documents\visual studio 2013\Projects\MLPonline\MLPonline\obj\Debug\MLPonline.pdb
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\MLPonline\MLPonline\bin\Debug\MLPonline.exe.config
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\MLPonline\MLPonline\obj\Debug\MLPonline.exe
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\MLPonline\MLPonline\obj\Debug\MLPonline.pdb
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\MLPonline\MLPonline\bin\Debug\MLPonline.exe
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\MLPonline\MLPonline\bin\Debug\MLPonline.pdb
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\MLPonline\MLPonline\bin\Debug\encog-core-cs.dll
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\MLPonline\MLPonline\obj\Debug\MLPonline.csprojResolveAssemblyReference.cache
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\MLPonline\MLPonline\obj\Debug\MLPonline.mainForm.resources
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\MLPonline\MLPonline\obj\Debug\MLPonline.Properties.Resources.resources
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\MLPonline\MLPonline\obj\Debug\MLPonline.csproj.GenerateResource.Cache
