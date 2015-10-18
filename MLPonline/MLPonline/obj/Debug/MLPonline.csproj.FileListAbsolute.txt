@@ -1,0 +1,10 @@
+c:\users\mateusz\documents\visual studio 2013\Projects\MLPonline\MLPonline\bin\Debug\MLPonline.exe.config
+c:\users\mateusz\documents\visual studio 2013\Projects\MLPonline\MLPonline\bin\Debug\MLPonline.exe
+c:\users\mateusz\documents\visual studio 2013\Projects\MLPonline\MLPonline\bin\Debug\MLPonline.pdb
+c:\users\mateusz\documents\visual studio 2013\Projects\MLPonline\MLPonline\bin\Debug\encog-core-cs.dll
+c:\users\mateusz\documents\visual studio 2013\Projects\MLPonline\MLPonline\obj\Debug\MLPonline.csprojResolveAssemblyReference.cache
+c:\users\mateusz\documents\visual studio 2013\Projects\MLPonline\MLPonline\obj\Debug\MLPonline.mainForm.resources
+c:\users\mateusz\documents\visual studio 2013\Projects\MLPonline\MLPonline\obj\Debug\MLPonline.Properties.Resources.resources
+c:\users\mateusz\documents\visual studio 2013\Projects\MLPonline\MLPonline\obj\Debug\MLPonline.csproj.GenerateResource.Cache
+c:\users\mateusz\documents\visual studio 2013\Projects\MLPonline\MLPonline\obj\Debug\MLPonline.exe
+c:\users\mateusz\documents\visual studio 2013\Projects\MLPonline\MLPonline\obj\Debug\MLPonline.pdb
