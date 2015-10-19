@@ -23,6 +23,12 @@ using Encog.ML.Data.Versatile.Sources;
 
 namespace MLPonline
 {
+    public enum ProblemType
+    {
+        Classification,
+        Regression
+    }
+
     public partial class mainForm : Form
     {
         private MLPNetwork mlpNetwork;
@@ -57,7 +63,7 @@ namespace MLPonline
 
         private void buttonTrain_Click(object sender, EventArgs e)
         {
-            if (numericUpDownLayersCount.Value == 0 || numericUpDownNeuronsCount.Value == 0 || numericUpDownIterationsCount.Value == 0 || comboBoxActivationFunction.Text == string.Empty)
+            if (numericUpDownLayersCount.Value == 0 || numericUpDownNeuronsCount.Value == 0 || numericUpDownIterationsCount.Value == 0 || comboBoxActivationFunction.Text == string.Empty || comboBoxProblemType.Text == string.Empty)
             {
                 MessageBox.Show("Brak zdefiniowanych wartości pól lub niedozwolone wartości pól.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -73,7 +79,7 @@ namespace MLPonline
             double learningRate = Decimal.ToDouble(numericUpDownLearningRate.Value);
             double momentum = Decimal.ToDouble(numericUpDownMomentum.Value);
 
-            mlpNetwork = new MLPNetwork(layersCount, neuronsCount, checkBoxBias.Checked,comboBoxActivationFunction.Text == "bipolarna" ? ActivationFunctionType.Bipolar : ActivationFunctionType.Unipolar, inputDataFileName );
+            mlpNetwork = new MLPNetwork(layersCount, neuronsCount, checkBoxBias.Checked,comboBoxActivationFunction.Text == "bipolarna" ? ActivationFunctionType.Bipolar : ActivationFunctionType.Unipolar, comboBoxProblemType.Text == "klasyfikacja" ? ProblemType.Classification : ProblemType.Regression, inputDataFileName );
 
             double[][] errors = mlpNetwork.Train(iterationsCount, learningRate, momentum);
 
@@ -107,7 +113,7 @@ namespace MLPonline
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                mlpNetwork.Test(openFileDialog.FileName, "result.csv");
+                mlpNetwork.Test(openFileDialog.FileName, "result.csv", chartTestResults);
             }
         }
 

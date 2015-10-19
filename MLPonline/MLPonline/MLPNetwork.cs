@@ -14,6 +14,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
+using System.Drawing;
 
 namespace MLPonline
 {
@@ -30,6 +32,7 @@ namespace MLPonline
         private int neuronsCount; //each layer
         private bool bias;
         private ActivationFunctionType activationFunType;
+        private ProblemType problemType;
 
         private int outputSize;
 
@@ -39,12 +42,17 @@ namespace MLPonline
 
         private BasicNetwork network;
 
+        private double[] idealMin;
+        private double[] idealMax;
+        private double normParam = 1.0;
+
+
         private IActivationFunction CreateActivationFunction()
         {
             switch (activationFunType)
             {
                 case ActivationFunctionType.Bipolar:
-                    return new ActivationBipolarSteepenedSigmoid();
+                    return new ActivationTANH(); //ActivationBipolarSteepenedSigmoid();
                 case ActivationFunctionType.Unipolar:
                     return new ActivationSigmoid();
                 default:
@@ -55,12 +63,13 @@ namespace MLPonline
         public MLPNetwork()
         { }
 
-        public MLPNetwork(int layersCount, int neuronsCount, bool bias, ActivationFunctionType aft, string inputFileName)
+        public MLPNetwork(int layersCount, int neuronsCount, bool bias, ActivationFunctionType aft, ProblemType problemType, string inputFileName)
         {
             this.layersCount = layersCount;
             this.neuronsCount = neuronsCount;
             this.bias = bias;
             this.activationFunType = aft;
+            this.problemType = problemType;
 
             LoadTrainingData(inputFileName);
 
@@ -73,7 +82,7 @@ namespace MLPonline
             network.Reset();
         }
 
-        public double[][] Train(int iterationsCount,  double learningRate, double momentum)
+        public double[][] Train(int iterationsCount, double learningRate, double momentum)
         {
             var train = new Backpropagation(network, trainingData, learningRate, momentum);
             train.BatchSize = 1;
@@ -97,7 +106,7 @@ namespace MLPonline
 
         public void LoadNetwork(string fileName)
         {
-             network = (BasicNetwork)EncogDirectoryPersistence.LoadObject(new FileInfo(fileName));
+            network = (BasicNetwork)EncogDirectoryPersistence.LoadObject(new FileInfo(fileName));
         }
 
 
@@ -126,45 +135,47 @@ namespace MLPonline
                     double b;
                     if (!double.TryParse(splittedLine[splittedLine.Length - 1], out b))
                         MessageBox.Show("Error parsing line: " + lineNumber);
-                    idealListBeforeTransformation.Add(new double[] {b});
+                    idealListBeforeTransformation.Add(new double[] { b });
                 }
             }
 
             //zmieniamy ideal na poprawna wersje dla KLASYFIKACJI
             List<double[]> ideal = new List<double[]>();
-            double min_val = (activationFunType == ActivationFunctionType.Bipolar) ? -1.0 : 0.0;
-            List<int> idealInts = new List<int>();
-            foreach (double[] dLine in idealListBeforeTransformation)
-                idealInts.Add((int)dLine[0]);
-            
-            HashSet<int> uniqueHashSet = new HashSet<int>(idealInts);
-            int[] unique = uniqueHashSet.ToArray();
-            outputSize = unique.Length;
-
-            foreach (int val in idealInts)
+            if (problemType == ProblemType.Classification)
             {
-                double[] idealElement = new double[unique.Length];
-                for (int i = 0; i < unique.Length; i++)
-                    idealElement[i] = unique[i] == val ? 1.0 : min_val;
-                ideal.Add(idealElement);
+                double min_val = (activationFunType == ActivationFunctionType.Bipolar) ? -1.0 : 0.0;
+                List<int> idealInts = new List<int>();
+                foreach (double[] dLine in idealListBeforeTransformation)
+                    idealInts.Add((int)dLine[0]);
+
+                HashSet<int> uniqueHashSet = new HashSet<int>(idealInts);
+                int[] unique = uniqueHashSet.ToArray();
+                outputSize = unique.Length;
+
+                foreach (int val in idealInts)
+                {
+                    double[] idealElement = new double[unique.Length];
+                    for (int i = 0; i < unique.Length; i++)
+                        idealElement[i] = unique[i] == val ? 1.0 : min_val;
+                    ideal.Add(idealElement);
+                }
             }
-             
-            //dla regresji
-            /*
-            List<double[]> ideal = idealListBeforeTransformation;
-            outputSize = 1;
-             * */
-            //
 
             Normalize(ref inputList);
+
+            if (problemType == ProblemType.Regression) // dla regresji
+            {
+                ideal = idealListBeforeTransformation;
+                outputSize = 1;
+                NormalizeIdeal(ref ideal);
+            }
+
             Randomize(ref inputList, ref ideal);
 
             int validation_size = inputList.Count / 10;
 
             validationData = new BasicMLDataSet(inputList.Take(validation_size).ToArray(), ideal.Take(validation_size).ToArray());
             trainingData = new BasicMLDataSet(inputList.Skip(validation_size).ToArray(), ideal.Skip(validation_size).ToArray());
-
-           // trainingData = new BasicMLDataSet(inputList.ToArray(), ideal.ToArray());
         }
 
         private List<double[]> LoadTestData(string testFile)
@@ -190,7 +201,7 @@ namespace MLPonline
                         lineData[j] = a;
                     }
                     testValues.Add(lineData);
-                    originalTestValues.Add(lineData);
+                    originalTestValues.Add((double[])lineData.Clone());
                 }
             }
 
@@ -202,44 +213,75 @@ namespace MLPonline
             return originalTestValues;
         }
 
-        public void Test(string testSetFile, string outputFile)
+        public void Test(string testSetFile, string outputFile, Chart resultsChart)
         {
             List<double[]> originalTestValues = LoadTestData(testSetFile);
-            List<double> res = new List<double>();
 
-            //regresja
-            /*
-            foreach (var val in testData)
-                res.Add(network.Compute(val)[0]);
-             * */
-
+            string resultString = string.Empty;
             //klasyfikacja
-            string resultString = string.Empty;
-            foreach (var dd in testData)
+            if (problemType == ProblemType.Classification)
             {
-                var d = network.Compute(dd);
-                for (int i = 0; i < outputSize; i++ )
-                    resultString += (d[i] + ",");
-                resultString += Environment.NewLine;
-                //int cls = 1;
-                /*
-                for (int i = 1; i < outputSize; i++)
+                resultsChart.Visible = true;
+                List<Color> colors = new List<Color>() { Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Violet, Color.Orange, Color.Beige, Color.Brown };
+                for (int i = 0; i < outputSize; i++)
                 {
-                    if (d[i] > d[i - 1])
-                        ++cls;
-                }
-                 * */
+                    var serie = new System.Windows.Forms.DataVisualization.Charting.Series
+                    {
+                        Name = ("klasa " + (i + 1)),
+                        Color = colors[i],
+                        ChartType = SeriesChartType.FastPoint
+                    };
 
+                    resultsChart.Series.Add(serie);
+                }
+
+                for (int j = 0; j < testData.Count; j++)
+                {
+                    var d = network.Compute(testData[j]);
+                    int cls = 1;
+                    for (int i = 1; i < outputSize; i++)
+                    {
+                        if (d[i] > d[i - 1])
+                            cls++;
+                    }
+                    resultsChart.Series["klasa " + cls].Points.AddXY(originalTestValues[j][0], originalTestValues[j][1]);
+                    resultsChart.Invalidate();
+                    foreach (double val in originalTestValues[j])
+                        resultString += (val + ",");
+                    resultString += (cls + Environment.NewLine);
+                }
             }
-            /*
-            string resultString = string.Empty;
-            for (int i = 0; i < originalTestValues.Count; i++)
+            else //regresja
             {
-                foreach (double d in originalTestValues[i])
-                    resultString += (d + ',');
-                resultString += (res[i] + Environment.NewLine);
+                resultsChart.Visible = true;
+
+                var serie = new System.Windows.Forms.DataVisualization.Charting.Series
+                {
+                    Name = ("regresja"),
+                    Color = Color.Blue,
+                    ChartType = SeriesChartType.FastPoint
+                };
+
+                resultsChart.Series.Add(serie);
+
+                double minVal = (activationFunType == ActivationFunctionType.Bipolar) ? -1.0 : 0.0;
+                double maxVal = 1.0;
+                double normSize = (maxVal - minVal) * normParam;
+
+                for (int j = 0; j < testData.Count; j++)
+                {
+                    var res = network.Compute(testData[j])[0];
+                    //denormalizacja
+                    double dSize = idealMax[0] - idealMin[0];
+                    res = idealMin[0] + ((res - minVal) * dSize / normSize);
+                    resultsChart.Series["regresja"].Points.AddXY(originalTestValues[j][0], res);
+                    resultsChart.Invalidate();
+                    foreach (double val in originalTestValues[j])
+                        resultString += (val + ",");
+                    resultString += (res + Environment.NewLine);
+                }
             }
-             * */
+
             using (StreamWriter outfile = new StreamWriter(outputFile))
             {
                 outfile.Write(resultString);
@@ -279,6 +321,41 @@ namespace MLPonline
                     elem[i] = ((elem[i] - minVals[i]) * normSize / dSize) + minVal;
             }
         }
+
+        private void NormalizeIdeal(ref List<double[]> data)
+        {
+            idealMin = new double[data[0].Length];
+            idealMax = new double[data[0].Length];
+            for (int i = 0; i < data[0].Length; i++)
+            {
+                idealMin[i] = double.PositiveInfinity;
+                idealMax[i] = double.NegativeInfinity;
+            }
+
+            foreach (double[] item in data)
+            {
+                for (int i = 0; i < item.Length; i++)
+                {
+                    if (item[i] < idealMin[i])
+                        idealMin[i] = item[i];
+
+                    if (item[i] > idealMax[i])
+                        idealMax[i] = item[i];
+                }
+            }
+
+            double minVal = (activationFunType == ActivationFunctionType.Bipolar) ? -1.0 : 0.0;
+            double maxVal = 1.0;
+            double normSize = (maxVal - minVal) * normParam;
+
+            for (int i = 0; i < data[0].Length; i++)
+            {
+                double dSize = idealMax[i] - idealMin[i];
+                foreach (double[] elem in data)
+                    elem[i] = ((elem[i] - idealMin[i]) * normSize / dSize) + minVal;
+            }
+        }
+
 
         protected void Randomize(ref List<double[]> input, ref List<double[]> ideal)
         {
