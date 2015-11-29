@@ -1,0 +1,11 @@
+C:\Users\Kuba\documents\visual studio 2013\Projects\SN-segmentacja\SN-segmentacja\bin\Release\SN-segmentacja.exe.config
+C:\Users\Kuba\documents\visual studio 2013\Projects\SN-segmentacja\SN-segmentacja\bin\Release\SN-segmentacja.exe
+C:\Users\Kuba\documents\visual studio 2013\Projects\SN-segmentacja\SN-segmentacja\bin\Release\SN-segmentacja.pdb
+C:\Users\Kuba\documents\visual studio 2013\Projects\SN-segmentacja\SN-segmentacja\obj\Release\SN-segmentacja.csprojResolveAssemblyReference.cache
+C:\Users\Kuba\documents\visual studio 2013\Projects\SN-segmentacja\SN-segmentacja\obj\Release\SN_segmentacja.BasePicture.resources
+C:\Users\Kuba\documents\visual studio 2013\Projects\SN-segmentacja\SN-segmentacja\obj\Release\SN_segmentacja.Form1.resources
+C:\Users\Kuba\documents\visual studio 2013\Projects\SN-segmentacja\SN-segmentacja\obj\Release\SN_segmentacja.GeneratedPicture.resources
+C:\Users\Kuba\documents\visual studio 2013\Projects\SN-segmentacja\SN-segmentacja\obj\Release\SN_segmentacja.Properties.Resources.resources
+C:\Users\Kuba\documents\visual studio 2013\Projects\SN-segmentacja\SN-segmentacja\obj\Release\SN-segmentacja.csproj.GenerateResource.Cache
+C:\Users\Kuba\documents\visual studio 2013\Projects\SN-segmentacja\SN-segmentacja\obj\Release\SN-segmentacja.exe
+C:\Users\Kuba\documents\visual studio 2013\Projects\SN-segmentacja\SN-segmentacja\obj\Release\SN-segmentacja.pdb
