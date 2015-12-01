@@ -1,0 +1,10 @@
+c:\users\kuba\documents\visual studio 2013\Projects\SegmentsForNN\SegmentsForNN\bin\Debug\SegmentsForNN.exe.config
+c:\users\kuba\documents\visual studio 2013\Projects\SegmentsForNN\SegmentsForNN\bin\Debug\SegmentsForNN.exe
+c:\users\kuba\documents\visual studio 2013\Projects\SegmentsForNN\SegmentsForNN\bin\Debug\SegmentsForNN.pdb
+c:\users\kuba\documents\visual studio 2013\Projects\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.csprojResolveAssemblyReference.cache
+c:\users\kuba\documents\visual studio 2013\Projects\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.Form1.resources
+c:\users\kuba\documents\visual studio 2013\Projects\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.Properties.Resources.resources
+c:\users\kuba\documents\visual studio 2013\Projects\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.csproj.GenerateResource.Cache
+c:\users\kuba\documents\visual studio 2013\Projects\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.exe
+c:\users\kuba\documents\visual studio 2013\Projects\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.pdb
+c:\users\kuba\documents\visual studio 2013\Projects\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.SegmentsViewer.resources

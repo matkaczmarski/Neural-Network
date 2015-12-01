@@ -1,0 +1,35 @@
+﻿Build started 2015-12-01 01:17:22.
+     1>Project "C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\IN_OpenCV.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I.\include /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Kuba\Desktop\lab4\lab4\Release\IN_OpenCV.exe" /NOLOGO /LIBPATH:.\lib opencv_core248.lib opencv_imgproc248.lib opencv_highgui248.lib opencv_features2d248.lib opencv_flann248.lib opencv_calib3d248.lib opencv_nonfree248.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Kuba\Desktop\lab4\lab4\Release\IN_OpenCV.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Kuba\Desktop\lab4\lab4\Release\IN_OpenCV.lib" /MACHINE:X86 /SAFESEH Release\main.obj
+         Generating code
+         Finished generating code
+         IN_OpenCV.vcxproj -> C:\Users\Kuba\Desktop\lab4\lab4\Release\IN_OpenCV.exe
+       PostBuildEvent:
+         copy "C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\*248.dll" "C:\Users\Kuba\Desktop\lab4\lab4\Release\"
+         :VCEnd
+         C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\opencv_calib3d248.dll
+         C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\opencv_contrib248.dll
+         C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\opencv_core248.dll
+         C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\opencv_features2d248.dll
+         C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\opencv_ffmpeg248.dll
+         C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\opencv_flann248.dll
+         C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\opencv_gpu248.dll
+         C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\opencv_highgui248.dll
+         C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\opencv_imgproc248.dll
+         C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\opencv_legacy248.dll
+         C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\opencv_ml248.dll
+         C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\opencv_nonfree248.dll
+         C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\opencv_objdetect248.dll
+         C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\opencv_ocl248.dll
+         C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\opencv_video248.dll
+         C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\opencv_videostab248.dll
+                16 file(s) copied.
+     1>Done Building Project "C:\Users\Kuba\Desktop\lab4\lab4\IN_OpenCV\IN_OpenCV.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.87
