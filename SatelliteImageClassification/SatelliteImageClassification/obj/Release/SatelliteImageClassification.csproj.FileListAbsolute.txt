@@ -8,3 +8,13 @@ C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\SatelliteImageClassificat
 C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.exe
 C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.pdb
 C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.csprojResolveAssemblyReference.cache
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\bin\Release\SatelliteImageClassification.exe.config
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.exe
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.pdb
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\bin\Release\SatelliteImageClassification.exe
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\bin\Release\SatelliteImageClassification.pdb
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\bin\Release\encog-core-cs.dll
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.csprojResolveAssemblyReference.cache
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.mainForm.resources
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.Properties.Resources.resources
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.csproj.GenerateResource.Cache

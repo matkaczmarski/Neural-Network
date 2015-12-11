@@ -20,10 +20,11 @@ namespace SatelliteImageClassification
             image = new Bitmap(fileName);
         }
 
-        public double[][] GetTrainingData()
+        public double[][] GetTrainingData(out double[][] ideal)
         {
             double[][] data = new double[COLUMNS * ROWSPERDIGIT * DIGITSCOUNT][];
-            double symbol = -1;
+            ideal = new double[COLUMNS * ROWSPERDIGIT * DIGITSCOUNT][];
+            int symbol = -1;
             int i = 0;
             for(int r=0; r<DIGITSCOUNT*ROWSPERDIGIT; r++)
             {
@@ -45,8 +46,10 @@ namespace SatelliteImageClassification
                             Color pixelColor = image.GetPixel(c * DIGITSIZE + cc, r * DIGITSIZE + rr);
                             digitPixels.Add(pixelColor.R/255.0);
                         }
-                    data[i++] = digitPixels.ToArray();
-                    
+                    double[] idealVec = new double[10];
+                    idealVec[symbol] = 1;
+                    ideal[i] = idealVec;
+                    data[i++] = digitPixels.ToArray();                  
                 }
             }
 
