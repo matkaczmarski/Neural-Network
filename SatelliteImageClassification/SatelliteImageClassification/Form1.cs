@@ -52,6 +52,10 @@ namespace SatelliteImageClassification
             chartErrors.Series["Layer2"].Points.Clear();
             chartErrors.Series["Layer3"].Points.Clear();
             chartErrors.Series["Layer4"].Points.Clear();
+
+            // DO ZMIANY!!!!!!!
+            string path = @"C:\Users\Kuba\Documents\GitHub\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\bin\Release\";
+            TrainingData data = SegmentationData.GetTrainingData(path + "originals", path + "segments", path + "buildings");
         }
 
         private void buttonGetInputFile_Click(object sender, EventArgs e)

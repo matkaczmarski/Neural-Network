@@ -8,3 +8,13 @@ c:\users\kuba\documents\visual studio 2013\Projects\SegmentsForNN\SegmentsForNN\
 c:\users\kuba\documents\visual studio 2013\Projects\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.exe
 c:\users\kuba\documents\visual studio 2013\Projects\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.pdb
 c:\users\kuba\documents\visual studio 2013\Projects\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.SegmentsViewer.resources
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SegmentsForNN\SegmentsForNN\bin\Debug\SegmentsForNN.exe.config
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.exe
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.pdb
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SegmentsForNN\SegmentsForNN\bin\Debug\SegmentsForNN.exe
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SegmentsForNN\SegmentsForNN\bin\Debug\SegmentsForNN.pdb
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.csprojResolveAssemblyReference.cache
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.Form1.resources
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.Properties.Resources.resources
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.SegmentsViewer.resources
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SegmentsForNN\SegmentsForNN\obj\Debug\SegmentsForNN.csproj.GenerateResource.Cache

@@ -18,3 +18,13 @@ C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\SatelliteImageClassification
 C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.mainForm.resources
 C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.Properties.Resources.resources
 C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.csproj.GenerateResource.Cache
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\bin\Release\SatelliteImageClassification.exe.config
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.exe
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.pdb
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\bin\Release\SatelliteImageClassification.exe
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\bin\Release\SatelliteImageClassification.pdb
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\bin\Release\encog-core-cs.dll
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.csprojResolveAssemblyReference.cache
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.mainForm.resources
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.Properties.Resources.resources
+C:\Users\Kuba\Documents\GitHub\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.csproj.GenerateResource.Cache

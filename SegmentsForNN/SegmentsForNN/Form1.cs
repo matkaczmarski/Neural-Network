@@ -15,16 +15,18 @@ namespace SegmentsForNN
     {
         private static Random rand = new Random();
 
-        Dictionary<int, SegmentData> nrOfElementsInSegment = new Dictionary<int, SegmentData>();
-        int[,] matrix = null;
-        int average = int.MaxValue;
+        private Dictionary<int, SegmentData> nrOfElementsInSegment = new Dictionary<int, SegmentData>();
+        private int[,] matrix = null;
+        private int average = int.MaxValue;
+
+        
         
         public Form1()
         {
             InitializeComponent();
 
-            Bitmap sourceImage = new Bitmap("C:\\Users\\Kuba\\Desktop\\lab4\\lab4\\IN_OpenCV\\test1.jpg");
-            Bitmap image = LoadImage("C:\\Users\\Kuba\\Desktop\\lab4\\lab4\\IN_OpenCV\\some_name.txt");//, out sourceImage);
+            Bitmap sourceImage = new Bitmap("C:\\Users\\Kuba\\Desktop\\lab4\\IN_OpenCV\\original_1.png");
+            Bitmap image = LoadImage("C:\\Users\\Kuba\\Desktop\\lab4\\IN_OpenCV\\some_name.txt");//, out sourceImage);
             pictureBox1.Image = image;
 
             List<Bitmap> segments = LoadSegments(sourceImage, image);
