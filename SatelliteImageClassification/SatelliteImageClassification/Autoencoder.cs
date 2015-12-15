@@ -4,6 +4,7 @@ using Encog.ML.Data.Basic;
 using Encog.ML.Train;
 using Encog.Neural.Networks;
 using Encog.Neural.Networks.Layers;
+using Encog.Neural.Networks.Training.Propagation.Back;
 using Encog.Neural.Networks.Training.Propagation.Resilient;
 using Encog.Persist;
 using System;
@@ -19,11 +20,20 @@ namespace SatelliteImageClassification
     public class Autoencoder
     {
         const double EPS = 1e-6;
-        const long AUTOENCODER_MAX_ITER = 100;
-        const long FINAL_NETWORK_MAX_ITER = 100;
+        const long AUTOENCODER_MAX_ITER = 200;
+        const long FINAL_NETWORK_MAX_ITER = 300;
         List<int> layersConfiguration;
 
         BasicNetwork network;
+
+        const bool BIAS = true;
+        const double LEARNING_RATE = 0.1;
+        const double MOMENTUM = 0.5;
+
+        private IActivationFunction CurrentActivationFunction()
+        {
+            return new ActivationSigmoid();
+        }
 
         public Autoencoder(List<int> layersConfig)
         {
@@ -46,14 +56,15 @@ namespace SatelliteImageClassification
             int inputLayerSize = layersConfiguration[0];
             int trainingLayerSize = layersConfiguration[1];
             BasicNetwork oneLayerAutoencoder = new BasicNetwork();
-            oneLayerAutoencoder.AddLayer(new BasicLayer(null, true, inputLayerSize));
-            oneLayerAutoencoder.AddLayer(new BasicLayer(new ActivationSigmoid(), true, trainingLayerSize));
-            oneLayerAutoencoder.AddLayer(new BasicLayer(new ActivationSigmoid(), false, inputLayerSize));
+            oneLayerAutoencoder.AddLayer(new BasicLayer(null, BIAS, inputLayerSize));
+            oneLayerAutoencoder.AddLayer(new BasicLayer(CurrentActivationFunction(), BIAS, trainingLayerSize));
+            oneLayerAutoencoder.AddLayer(new BasicLayer(CurrentActivationFunction(), false, inputLayerSize));
             oneLayerAutoencoder.Structure.FinalizeStructure();
             oneLayerAutoencoder.Reset();
 
             IMLTrain train = new ResilientPropagation(oneLayerAutoencoder, trainingSet);
-            
+            //IMLTrain train = new Backpropagation(oneLayerAutoencoder, trainingSet, LEARNING_RATE, MOMENTUM);
+
             int epoch = 1;
             List<double[]> errors = new List<double[]>();
             double[] trainError = new double[AUTOENCODER_MAX_ITER];
@@ -70,8 +81,8 @@ namespace SatelliteImageClassification
             train.FinishTraining();
             
             BasicNetwork encoder = new BasicNetwork();
-            encoder.AddLayer(new BasicLayer(null, true, oneLayerAutoencoder.GetLayerNeuronCount(0)));
-            encoder.AddLayer(new BasicLayer(new ActivationSigmoid(), false, oneLayerAutoencoder.GetLayerNeuronCount(1)));
+            encoder.AddLayer(new BasicLayer(null, BIAS, oneLayerAutoencoder.GetLayerNeuronCount(0)));
+            encoder.AddLayer(new BasicLayer(CurrentActivationFunction(), false, oneLayerAutoencoder.GetLayerNeuronCount(1)));
             encoder.Structure.FinalizeStructure();
             encoder.Reset();
 
@@ -88,9 +99,9 @@ namespace SatelliteImageClassification
                 inputLayerSize = layersConfiguration[l];
                 trainingLayerSize = layersConfiguration[l+1];
                 oneLayerAutoencoder = new BasicNetwork();
-                oneLayerAutoencoder.AddLayer(new BasicLayer(null, true, inputLayerSize));
-                oneLayerAutoencoder.AddLayer(new BasicLayer(new ActivationSigmoid(), true, trainingLayerSize));
-                oneLayerAutoencoder.AddLayer(new BasicLayer(new ActivationSigmoid(), false, inputLayerSize));
+                oneLayerAutoencoder.AddLayer(new BasicLayer(null, BIAS, inputLayerSize));
+                oneLayerAutoencoder.AddLayer(new BasicLayer(CurrentActivationFunction(), BIAS, trainingLayerSize));
+                oneLayerAutoencoder.AddLayer(new BasicLayer(CurrentActivationFunction(), false, inputLayerSize));
                 oneLayerAutoencoder.Structure.FinalizeStructure();
                 oneLayerAutoencoder.Reset();
 
@@ -100,16 +111,17 @@ namespace SatelliteImageClassification
                 for(int ni = 0; ni <n; ni++)
                 {
                     IMLData res = encoder.Compute(new BasicMLData(data[ni]));
-                    double[] resD = new double[m];
+                    double[] resD = new double[res.Count];
                     for(int i=0; i<res.Count; i++)
                         resD[i] = res[i];
                     input[ni] = resD;
-                    newOutput[ni] = new double[m];
+                    newOutput[ni] = new double[res.Count];
                     input[ni].CopyTo(newOutput[ni], 0);
                 }
 
                 BasicMLDataSet newTrainingSet = new BasicMLDataSet(input, newOutput);               
                 train = new ResilientPropagation(oneLayerAutoencoder, newTrainingSet);
+                //train = new Backpropagation(oneLayerAutoencoder, newTrainingSet, LEARNING_RATE, MOMENTUM);
 
                 epoch = 1;
                 trainError = new double[AUTOENCODER_MAX_ITER];
@@ -124,10 +136,10 @@ namespace SatelliteImageClassification
                 train.FinishTraining();
                 
                 BasicNetwork extendedEncoder = new BasicNetwork();
-                extendedEncoder.AddLayer(new BasicLayer(null, true, encoder.GetLayerNeuronCount(0)));
+                extendedEncoder.AddLayer(new BasicLayer(null, BIAS, encoder.GetLayerNeuronCount(0)));
                 for (int el = 1; el < encoder.LayerCount; el++ )
-                    extendedEncoder.AddLayer(new BasicLayer(new ActivationSigmoid(), true, encoder.GetLayerNeuronCount(el)));
-                extendedEncoder.AddLayer(new BasicLayer(new ActivationSigmoid(), false, oneLayerAutoencoder.GetLayerNeuronCount(1)));
+                    extendedEncoder.AddLayer(new BasicLayer(CurrentActivationFunction(), BIAS, encoder.GetLayerNeuronCount(el)));
+                extendedEncoder.AddLayer(new BasicLayer(CurrentActivationFunction(), false, oneLayerAutoencoder.GetLayerNeuronCount(1)));
                 extendedEncoder.Structure.FinalizeStructure();
                
 
@@ -147,17 +159,16 @@ namespace SatelliteImageClassification
                                 extendedEncoder.SetWeight(i, f, t, oneLayerAutoencoder.GetWeight(0, f, t));
                     }
                 }
-                //Compare2Networks(oneLayerAutoencoder, extendedEncoder);
                 encoder = extendedEncoder;
 
             }
 
             //tworzenie struktury ostatecznej sieci
             network = new BasicNetwork();
-            network.AddLayer(new BasicLayer(null, true, encoder.GetLayerNeuronCount(0)));
+            network.AddLayer(new BasicLayer(null, BIAS, encoder.GetLayerNeuronCount(0)));
             for (int el = 1; el < encoder.LayerCount; el++)
-                network.AddLayer(new BasicLayer(new ActivationSigmoid(), true, encoder.GetLayerNeuronCount(el)));
-            network.AddLayer(new BasicLayer(new ActivationSigmoid(), false, layersConfiguration[layersConfiguration.Count -1]));
+                network.AddLayer(new BasicLayer(CurrentActivationFunction(), BIAS, encoder.GetLayerNeuronCount(el)));
+            network.AddLayer(new BasicLayer(CurrentActivationFunction(), false, layersConfiguration[layersConfiguration.Count - 1]));
             network.Structure.FinalizeStructure();
             network.Reset();
 
@@ -170,6 +181,8 @@ namespace SatelliteImageClassification
             //uczenie koncowej sieci
             trainingSet = new BasicMLDataSet(data, ideal);
             train = new ResilientPropagation(network, trainingSet);
+            //train = new Backpropagation(network, trainingSet, LEARNING_RATE, MOMENTUM);
+
             epoch = 1;
             trainError = new double[FINAL_NETWORK_MAX_ITER];
             do
@@ -184,7 +197,9 @@ namespace SatelliteImageClassification
 
             try
             {
-                EncogDirectoryPersistence.SaveObject(new FileInfo("final network2"), network);
+                string networkFileName = "final network 3";
+                EncogDirectoryPersistence.SaveObject(new FileInfo(networkFileName), network);
+                MessageBox.Show("NETWORK SAVED TO FILE " + networkFileName);
             }
             catch (Exception ex)
             {
@@ -203,6 +218,20 @@ namespace SatelliteImageClassification
             double maxValue = resD.Max();
             double maxIndex = resD.ToList().IndexOf(maxValue);
             return maxIndex;
+        }
+
+        public int[] ComputeMostPossible(double[] val, int possibleCount)
+        {
+            IMLData res = network.Compute(new BasicMLData(val));
+            double[] resD = new double[res.Count];
+            for (int i = 0; i < res.Count; i++)
+                resD[i] = res[i];
+
+            var sorted = resD.Select((x, i) => new KeyValuePair<double, int>(x, i)).OrderByDescending(x => x.Key).ToList();
+            List<double> B = sorted.Select(x => x.Key).ToList();
+            List<int> idx = sorted.Select(x => x.Value).ToList();
+
+            return idx.Take(possibleCount).ToArray();
         }
 
         public void LoadNetwork(string fileName)
@@ -244,8 +273,6 @@ namespace SatelliteImageClassification
             }
             MessageBox.Show(oneLay);
         }
-
-
 
     }
 }
