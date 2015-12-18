@@ -27,7 +27,6 @@ namespace SatelliteImageClassification
 
     public partial class mainForm : Form
     {
-        //private MLPNetwork mlpNetwork;
         private string inputDataFileName;
 
         double[][] trainingData;
@@ -37,6 +36,8 @@ namespace SatelliteImageClassification
         const int COLUMNS = 100;
         const int DIGITSCOUNT = 10;
 
+        const int TEST_SIZE = 20;
+
         Autoencoder autoencoder;
 
 
@@ -44,10 +45,6 @@ namespace SatelliteImageClassification
         {
             InitializeComponent();
             inputDataFileName = string.Empty;
-            numericUpDownIterationsCount.Maximum = Decimal.MaxValue;
-            numericUpDownLearningRate.Maximum = Decimal.MaxValue;
-            numericUpDownMomentum.Maximum = Decimal.MaxValue;
-
             chartErrors.Series["Layer1"].Points.Clear();
             chartErrors.Series["Layer2"].Points.Clear();
             chartErrors.Series["Layer3"].Points.Clear();
@@ -76,29 +73,10 @@ namespace SatelliteImageClassification
 
         private void buttonTrain_Click(object sender, EventArgs e)
         {
-            /*
-            if (numericUpDownLayersCount.Value == 0 || numericUpDownNeuronsCount.Value == 0 || numericUpDownIterationsCount.Value == 0 || comboBoxActivationFunction.Text == string.Empty || comboBoxProblemType.Text == string.Empty)
-            {
-                MessageBox.Show("Brak zdefiniowanych wartości pól lub niedozwolone wartości pól.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            if(inputDataFileName == string.Empty)
-            {
-                MessageBox.Show("Brak danych treningowych.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-             * */
-            int iterationsCount = Decimal.ToInt32(numericUpDownIterationsCount.Value);
-            double learningRate = Decimal.ToDouble(numericUpDownLearningRate.Value);
-            double momentum = Decimal.ToDouble(numericUpDownMomentum.Value);
 
             int digitVectorSize = DIGITSIZE * DIGITSIZE;
             autoencoder = new Autoencoder(new List<int>() { digitVectorSize, 100, 50, 10 });//new List<int>() { digitVectorSize, 100 });
             List<double[]> errors = autoencoder.Learn(trainingData, idealData);
-
-            //double[][] trainingSet = GenerateRandomTrainingSet(4, 100);
-            //List<double[]> errors = autoencoder.learn(trainingSet);
-
             
             chartErrors.Series["Layer1"].Points.Clear();
             chartErrors.Series["Layer2"].Points.Clear();
@@ -114,7 +92,6 @@ namespace SatelliteImageClassification
                 chartErrors.Series["Layer3"].Points.AddXY(i + 1, errors[2][i]);
             }
             
-            //mlpNetwork.SaveNetwork("network");
         }
 
         private double[][] GenerateRandomTrainingSet(int vectorSize, int setSize)
@@ -133,7 +110,6 @@ namespace SatelliteImageClassification
         }
 
 
-        const int TEST_SIZE = 100;
 
         private void buttonTest_Click(object sender, EventArgs e)
         {
@@ -152,15 +128,24 @@ namespace SatelliteImageClassification
             int wrongAnswers = 0;
             for (int i = 0; i < testSet.Length; i++ )
             {
-                double computedVal = autoencoder.Compute(testSet[i]);
-                wrongAnswers += (computedVal == testResult[i] ? 0 : 1);
-                debugg += "JEST: " + computedVal + ", MIAŁO BYC: " + testResult[i] + ";  ";
-                if (i % 10 == 0)
-                    debugg += "\n";
+                //double computedVal = autoencoder.Compute(testSet[i]);
+                int[] possibleVals = autoencoder.ComputeMostPossible(testSet[i], 3);
+                if (possibleVals[0] == testResult[i])
+                    debugg += "JEST: " + string.Join(", ", possibleVals) + ", MIAŁO BYC: " + testResult[i] + ";  ";
+                else
+                {
+                    wrongAnswers++;
+                    debugg += "##JEST: " + string.Join(", ", possibleVals) + ", MIAŁO BYC: " + testResult[i] + ";  ##";
+                }
+                //debugg += "JEST: " + computedVal + ", MIAŁO BYC: " + testResult[i] + ";  ";
+                
+                //if (i % 10 == 0)
+                debugg += "\n";
             }
             MessageBox.Show(debugg + "\n LICZBA BŁĘDNYCH:" + wrongAnswers);
 
                 return;
+            /*
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "CSV Files (.csv)|*.csv|All Files (*.*)|*.*";
             openFileDialog.FilterIndex = 1;
@@ -170,6 +155,7 @@ namespace SatelliteImageClassification
             {
                 //mlpNetwork.Test(openFileDialog.FileName, "result.csv", chartTestResults);
             }
+             */
         }
 
         private void buttonLoadNetwork_Click(object sender, EventArgs e)
@@ -181,17 +167,14 @@ namespace SatelliteImageClassification
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-               // mlpNetwork = new MLPNetwork();
                 try
                 {
-                 //   mlpNetwork.LoadNetwork(openFileDialog.FileName);
                     autoencoder = new Autoencoder(null);
                     autoencoder.LoadNetwork(openFileDialog.FileName);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
-                 //   mlpNetwork = null;
                 }
             }
         }
