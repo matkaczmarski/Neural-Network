@@ -36,10 +36,12 @@ namespace SatelliteImageClassification
         const int COLUMNS = 100;
         const int DIGITSCOUNT = 10;
 
-        const int TEST_SIZE = 20;
+         int TEST_SIZE = 10000;
 
         Autoencoder autoencoder;
+        TrainingData training;
 
+        Bitmap originalImage;
 
         public mainForm()
         {
@@ -50,9 +52,44 @@ namespace SatelliteImageClassification
             chartErrors.Series["Layer3"].Points.Clear();
             chartErrors.Series["Layer4"].Points.Clear();
 
-            // DO ZMIANY!!!!!!!
-            string path = @"C:\Users\Kuba\Documents\GitHub\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\bin\Release\";
-            TrainingData data = SegmentationData.GetTrainingData(path + "originals", path + "segments", path + "buildings");
+            string path = Directory.GetCurrentDirectory() + "\\";
+            SegmentationData.MAX_SEGMENT_SIZE = 8;
+            training = SegmentationData.GetTrainingData(path + "originals", path + "segments", path + "buildings", out originalImage);
+            trainingData = training.Vectors;
+            idealData = training.Ideal;
+            this.pictureBox1.Image = originalImage = training.OriginalImage;
+            
+            /*ImageForm imageForm = new ImageForm(training.OriginalImage);
+            imageForm.Show();
+            List<Bitmap> bitmaps = new List<Bitmap>();
+            for (int i = 0; i < training.Vectors.Length; i++)
+                if (idealData[i][0] == 1)
+                    bitmaps.Add(SegmentationData.GetBitmapFromDoubleArray(training.Vectors[i]));
+            SegmentsViewer segmentsViewer = new SegmentsViewer(bitmaps);
+            segmentsViewer.ShowDialog();*/
+
+            /*for (int i = 0; i < training.Segments.Length; i++)
+            {
+                for (int x = 0; x < training.Segments[i].Width; x++)
+                {
+                    for (int y = 0; y < training.Segments[i].Height; y++)
+                    {
+                        if (training.Segments[i].GetPixel(x,y).ToArgb() != Color.White.ToArgb())
+                            originalImage.SetPixel(x + training.Positions[i].X, y + training.Positions[i].Y, training.Segments[i].GetPixel(x,y));
+                    }
+                }
+            }
+            ImageForm imageForm = new ImageForm(originalImage);
+            imageForm.ShowDialog();*/
+
+            for (int i = 0; i < training.Vectors.Length; i++)
+            {
+                for (int j = 0; j < training.Vectors[i].Length - 4; j++)
+                {
+                    if (training.Vectors[i][j] > 0)
+                        training.Vectors[i][j] /= 255;
+                }
+            }
         }
 
         private void buttonGetInputFile_Click(object sender, EventArgs e)
@@ -75,7 +112,8 @@ namespace SatelliteImageClassification
         {
 
             int digitVectorSize = DIGITSIZE * DIGITSIZE;
-            autoencoder = new Autoencoder(new List<int>() { digitVectorSize, 100, 50, 10 });//new List<int>() { digitVectorSize, 100 });
+            //autoencoder = new Autoencoder(new List<int>() { digitVectorSize, 100, 50, 10 });//new List<int>() { digitVectorSize, 100 });
+            autoencoder = new Autoencoder(new List<int>() { SegmentationData.MAX_SEGMENT_SIZE * SegmentationData.MAX_SEGMENT_SIZE * 3 + 4, 100, 50, 3 });
             List<double[]> errors = autoencoder.Learn(trainingData, idealData);
             
             chartErrors.Series["Layer1"].Points.Clear();
@@ -113,12 +151,13 @@ namespace SatelliteImageClassification
 
         private void buttonTest_Click(object sender, EventArgs e)
         {
+            TEST_SIZE = training.Segments.Length;
             double[][] testSet = new double[TEST_SIZE][];
             int[] testResult = new int[TEST_SIZE];
             Random rand = new Random();
             for (int i = 0; i < TEST_SIZE; i++)
             {
-                int randInd = rand.Next(trainingData.Length);
+                int randInd = i;//rand.Next(trainingData.Length);
                 testSet[i] = trainingData[randInd];
                 for (int j = 0; j < idealData[randInd].Length; j++)
                     if (idealData[randInd][j] == 1)
@@ -128,8 +167,21 @@ namespace SatelliteImageClassification
             int wrongAnswers = 0;
             for (int i = 0; i < testSet.Length; i++ )
             {
-                //double computedVal = autoencoder.Compute(testSet[i]);
-                int[] possibleVals = autoencoder.ComputeMostPossible(testSet[i], 3);
+                double computedVal = autoencoder.Compute(testSet[i]);
+                if (computedVal != testResult[i])
+                    wrongAnswers++;
+                if (computedVal == 0)
+                {
+                    for (int x = 0; x < training.Segments[i].Width; x++)
+                    {
+                        for (int y = 0; y < training.Segments[i].Height; y++)
+                        {
+                            originalImage.SetPixel(x + training.Positions[i].X, y + training.Positions[i].Y, Color.FromArgb(50, 255, 255, 255));
+                        }
+                    }                
+                }
+                //int[] possibleVals = autoencoder.ComputeMostPossible(testSet[i], 3);
+                /*
                 if (possibleVals[0] == testResult[i])
                     debugg += "JEST: " + string.Join(", ", possibleVals) + ", MIAŁO BYC: " + testResult[i] + ";  ";
                 else
@@ -141,7 +193,10 @@ namespace SatelliteImageClassification
                 
                 //if (i % 10 == 0)
                 debugg += "\n";
+                */
+
             }
+            this.pictureBox1.Image = originalImage;
             MessageBox.Show(debugg + "\n LICZBA BŁĘDNYCH:" + wrongAnswers);
 
                 return;

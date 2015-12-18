@@ -8,3 +8,13 @@ c:\users\mateusz\documents\visual studio 2013\Projects\SatelliteImageClassificat
 c:\users\mateusz\documents\visual studio 2013\Projects\SatelliteImageClassification\SatelliteImageClassification\bin\Debug\encog-core-cs.dll
 c:\users\mateusz\documents\visual studio 2013\Projects\SatelliteImageClassification\SatelliteImageClassification\obj\Debug\SatelliteImageClassification.exe
 c:\users\mateusz\documents\visual studio 2013\Projects\SatelliteImageClassification\SatelliteImageClassification\obj\Debug\SatelliteImageClassification.pdb
+h:\Windows7\Desktop\Sieci neuronowe\SatelliteImageClassification\SatelliteImageClassification\bin\Debug\SatelliteImageClassification.exe.config
+h:\Windows7\Desktop\Sieci neuronowe\SatelliteImageClassification\SatelliteImageClassification\obj\Debug\SatelliteImageClassification.exe
+h:\Windows7\Desktop\Sieci neuronowe\SatelliteImageClassification\SatelliteImageClassification\obj\Debug\SatelliteImageClassification.pdb
+h:\Windows7\Desktop\Sieci neuronowe\SatelliteImageClassification\SatelliteImageClassification\bin\Debug\SatelliteImageClassification.exe
+h:\Windows7\Desktop\Sieci neuronowe\SatelliteImageClassification\SatelliteImageClassification\bin\Debug\SatelliteImageClassification.pdb
+h:\Windows7\Desktop\Sieci neuronowe\SatelliteImageClassification\SatelliteImageClassification\bin\Debug\encog-core-cs.dll
+h:\Windows7\Desktop\Sieci neuronowe\SatelliteImageClassification\SatelliteImageClassification\obj\Debug\SatelliteImageClassification.csprojResolveAssemblyReference.cache
+h:\Windows7\Desktop\Sieci neuronowe\SatelliteImageClassification\SatelliteImageClassification\obj\Debug\SatelliteImageClassification.mainForm.resources
+h:\Windows7\Desktop\Sieci neuronowe\SatelliteImageClassification\SatelliteImageClassification\obj\Debug\SatelliteImageClassification.Properties.Resources.resources
+h:\Windows7\Desktop\Sieci neuronowe\SatelliteImageClassification\SatelliteImageClassification\obj\Debug\SatelliteImageClassification.csproj.GenerateResource.Cache
