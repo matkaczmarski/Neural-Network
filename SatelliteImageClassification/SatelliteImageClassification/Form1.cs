@@ -159,15 +159,31 @@ namespace SatelliteImageClassification
             }
             int wrongAnswers = 0;
 
-            for (int i = 0; i < testSet.Length; i++ )
+            Bitmap resultBitmap = new Bitmap(training.OriginalImage.Width, training.OriginalImage.Height);
+            for (int x = 0; x < resultBitmap.Width; x++)
+                for (int y = 0; y < resultBitmap.Height; y++)
+                    resultBitmap.SetPixel(x, y, Color.White);
+
+            for (int i = 0; i < testSet.Length; i++)
             {
+                double[,][] segment = SegmentationData.CovertFrom1DArray(trainingData[i]);
                 int computedVal = (int)autoencoder.Compute(testSet[i]);
+                if (computedVal != testResult[i])//(computedVal == 0)
+                {
+                    for (int x = 0; x < training.Segments[i].Width; x++)
+                    {
+                        for (int y = 0; y < training.Segments[i].Height; y++)
+                        {
+                            if (segment[x,y][0] >= 0)
+                                resultBitmap.SetPixel(x + training.Positions[i].X, y + training.Positions[i].Y, Color.Red);
+                        }
+                    } 
+                }
                 if (computedVal != testResult[i])
                 {
                     wrongAnswers++;
                 }
-                
-                if (computedVal != testResult[i])
+                if (computedVal == testResult[i])
                 {
                     for (int x = 0; x < training.Segments[i].Width; x++)
                     {
@@ -179,7 +195,54 @@ namespace SatelliteImageClassification
                 }
             }
             this.pictureBox1.Image = originalImage;
-            MessageBox.Show("\n LICZBA BŁĘDNYCH:" + wrongAnswers);
+            
+            TestResult res = TestResultBitmap(resultBitmap, training.SegmentsImage);
+            ImageForm if1 = new ImageForm(resultBitmap);
+            if1.Text = "Result";
+            if1.Show();
+
+            ImageForm if2 = new ImageForm(training.SegmentsImage);
+            if2.Text = "Ideal";
+            if2.Show();
+
+            MessageBox.Show("\n LICZBA BŁĘDNYCH PIXELI: " + res.WrongPixels + "\n LICZBA POPRAWNYCH PIXELI: " + res.CorrectPixels + "\n PROCENT POPRAWNYCH PIXELI: " + res.Percentage + "\n LICZBA PIXELI BUDYNKÓW: " + res.BuildingPixels + "\n LICZBA BŁĘDNYCH PIXELI BUDYNKÓW: " + res.WrongBuildingPixels + "\n LICZBA PIXELI TERENU: " + res.TerrainPixels + "\n LCIZBA BŁĘDNYCH PIXELI TERENU: " + res.WrongTerrainPixels);
+        }
+
+        private TestResult TestResultBitmap(Bitmap result, Bitmap ideal)
+        {
+            TestResult testResult = new TestResult();
+
+            if (result.Width != ideal.Width || result.Height != ideal.Height)
+                throw new Exception();
+
+            for (int x = 0; x < result.Width; x++)
+                for (int y = 0; y < result.Height; y++)
+                {
+                    if (result.GetPixel(x,y).ToArgb() != Color.White.ToArgb())
+                    {
+                        testResult.BuildingPixels++;
+                        if (ideal.GetPixel(x, y).ToArgb() != Color.White.ToArgb())
+                            testResult.CorrectPixels++;
+                        else
+                        {
+                            testResult.WrongPixels++;
+                            testResult.WrongBuildingPixels++;
+                        }
+                    }
+                    else
+                    {
+                        testResult.TerrainPixels++;
+                        if (ideal.GetPixel(x, y).ToArgb() != Color.White.ToArgb())
+                        {
+                            testResult.WrongPixels++;
+                            testResult.WrongTerrainPixels++;
+                        }
+                        else
+                            testResult.CorrectPixels++;
+                    }
+                }
+
+            return testResult;
         }
 
         private void buttonLoadNetwork_Click(object sender, EventArgs e)
