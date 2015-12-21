@@ -76,6 +76,7 @@
     <Compile Include="SegmentsViewer.Designer.cs">
       <DependentUpon>SegmentsViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestResult.cs" />
     <Compile Include="TrainingData.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

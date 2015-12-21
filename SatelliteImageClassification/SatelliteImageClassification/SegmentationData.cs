@@ -50,6 +50,7 @@ namespace SatelliteImageClassification
                 trainingData.Positions = points.ToArray();
                 trainingData.Segments = segmentsImages.ToArray();
                 trainingData.OriginalImage = originalImage;
+                trainingData.SegmentsImage = buildingsImage;
                 segmentsList.AddRange(result.Item1);
                 idealList.AddRange(result.Item2);
             }
@@ -415,6 +416,17 @@ namespace SatelliteImageClassification
                         bitmap.SetPixel(x, y, Color.White);
                 }
             return bitmap;
+        }
+
+        public static double[,][] CovertFrom1DArray(double[] data)
+        {
+            int size = (int)Math.Sqrt((data.Length - 4) / 3);
+            double[,][] pixels = new double[size, size][];
+            for (int x = 0; x < size; x++)
+                for (int y = 0; y < size; y++)
+                    pixels[x, y] = new double[] { data[y * size * 3 + 3 * x], data[y * size * 3 + 3 * x + 1], data[y * size * 3 + 3 * x + 2] };
+
+            return pixels;
         }
     }
 }

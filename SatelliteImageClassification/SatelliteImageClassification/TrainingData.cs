@@ -12,6 +12,7 @@ namespace SatelliteImageClassification
         public double[][] Vectors { get; set; }
         public double[][] Ideal { get; set; }
         public Bitmap OriginalImage { get; set; }
+        public Bitmap SegmentsImage { get; set; }
         public Point[] Positions { get; set; }
         public Bitmap[] Segments { get; set; }
     }
