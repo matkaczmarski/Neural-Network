@@ -36,8 +36,6 @@ namespace SatelliteImageClassification
         const int COLUMNS = 100;
         const int DIGITSCOUNT = 10;
 
-         int TEST_SIZE = 10000;
-
         Autoencoder autoencoder;
         TrainingData training;
 
@@ -110,8 +108,6 @@ namespace SatelliteImageClassification
 
         private void buttonTrain_Click(object sender, EventArgs e)
         {
-
-            int digitVectorSize = DIGITSIZE * DIGITSIZE;
             //autoencoder = new Autoencoder(new List<int>() { digitVectorSize, 100, 50, 10 });//new List<int>() { digitVectorSize, 100 });
             autoencoder = new Autoencoder(new List<int>() { SegmentationData.MAX_SEGMENT_SIZE * SegmentationData.MAX_SEGMENT_SIZE * 3 + 4, 100, 50, 3 });
             List<double[]> errors = autoencoder.Learn(trainingData, idealData);
@@ -151,26 +147,27 @@ namespace SatelliteImageClassification
 
         private void buttonTest_Click(object sender, EventArgs e)
         {
-            TEST_SIZE = training.Segments.Length;
-            double[][] testSet = new double[TEST_SIZE][];
-            int[] testResult = new int[TEST_SIZE];
-            Random rand = new Random();
-            for (int i = 0; i < TEST_SIZE; i++)
+            int testSize = training.Segments.Length;
+            double[][] testSet = new double[testSize][];
+            int[] testResult = new int[testSize];
+            for (int i = 0; i < testSize; i++)
             {
-                int randInd = i;//rand.Next(trainingData.Length);
-                testSet[i] = trainingData[randInd];
-                for (int j = 0; j < idealData[randInd].Length; j++)
-                    if (idealData[randInd][j] == 1)
+                testSet[i] = trainingData[i];
+                for (int j = 0; j < idealData[i].Length; j++)
+                    if (idealData[i][j] == 1)
                         testResult[i] = j;
             }
-            string debugg = string.Empty;
             int wrongAnswers = 0;
+
             for (int i = 0; i < testSet.Length; i++ )
             {
-                double computedVal = autoencoder.Compute(testSet[i]);
+                int computedVal = (int)autoencoder.Compute(testSet[i]);
                 if (computedVal != testResult[i])
+                {
                     wrongAnswers++;
-                if (computedVal == 0)
+                }
+                
+                if (computedVal != testResult[i])
                 {
                     for (int x = 0; x < training.Segments[i].Width; x++)
                     {
@@ -180,37 +177,9 @@ namespace SatelliteImageClassification
                         }
                     }                
                 }
-                //int[] possibleVals = autoencoder.ComputeMostPossible(testSet[i], 3);
-                /*
-                if (possibleVals[0] == testResult[i])
-                    debugg += "JEST: " + string.Join(", ", possibleVals) + ", MIAŁO BYC: " + testResult[i] + ";  ";
-                else
-                {
-                    wrongAnswers++;
-                    debugg += "##JEST: " + string.Join(", ", possibleVals) + ", MIAŁO BYC: " + testResult[i] + ";  ##";
-                }
-                //debugg += "JEST: " + computedVal + ", MIAŁO BYC: " + testResult[i] + ";  ";
-                
-                //if (i % 10 == 0)
-                debugg += "\n";
-                */
-
             }
             this.pictureBox1.Image = originalImage;
-            MessageBox.Show(debugg + "\n LICZBA BŁĘDNYCH:" + wrongAnswers);
-
-                return;
-            /*
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "CSV Files (.csv)|*.csv|All Files (*.*)|*.*";
-            openFileDialog.FilterIndex = 1;
-            openFileDialog.Multiselect = false;
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                //mlpNetwork.Test(openFileDialog.FileName, "result.csv", chartTestResults);
-            }
-             */
+            MessageBox.Show("\n LICZBA BŁĘDNYCH:" + wrongAnswers);
         }
 
         private void buttonLoadNetwork_Click(object sender, EventArgs e)
