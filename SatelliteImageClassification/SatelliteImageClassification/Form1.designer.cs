@@ -48,10 +48,10 @@
             // 
             // buttonGetInputFile
             // 
-            this.buttonGetInputFile.Location = new System.Drawing.Point(16, 21);
-            this.buttonGetInputFile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonGetInputFile.Location = new System.Drawing.Point(21, 26);
+            this.buttonGetInputFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonGetInputFile.Name = "buttonGetInputFile";
-            this.buttonGetInputFile.Size = new System.Drawing.Size(103, 28);
+            this.buttonGetInputFile.Size = new System.Drawing.Size(137, 34);
             this.buttonGetInputFile.TabIndex = 0;
             this.buttonGetInputFile.Text = "Dane treningowe";
             this.buttonGetInputFile.UseVisualStyleBackColor = true;
@@ -59,10 +59,10 @@
             // 
             // buttonTrain
             // 
-            this.buttonTrain.Location = new System.Drawing.Point(256, 21);
-            this.buttonTrain.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonTrain.Location = new System.Drawing.Point(341, 26);
+            this.buttonTrain.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonTrain.Name = "buttonTrain";
-            this.buttonTrain.Size = new System.Drawing.Size(103, 28);
+            this.buttonTrain.Size = new System.Drawing.Size(137, 34);
             this.buttonTrain.TabIndex = 16;
             this.buttonTrain.Text = "Ucz";
             this.buttonTrain.UseVisualStyleBackColor = true;
@@ -70,11 +70,11 @@
             // 
             // buttonTest
             // 
-            this.buttonTest.Location = new System.Drawing.Point(381, 21);
-            this.buttonTest.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonTest.Location = new System.Drawing.Point(508, 26);
+            this.buttonTest.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonTest.Name = "buttonTest";
             this.buttonTest.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.buttonTest.Size = new System.Drawing.Size(103, 28);
+            this.buttonTest.Size = new System.Drawing.Size(137, 34);
             this.buttonTest.TabIndex = 17;
             this.buttonTest.Text = "Testuj";
             this.buttonTest.UseVisualStyleBackColor = true;
@@ -82,17 +82,17 @@
             // 
             // chartErrors
             // 
-            this.chartErrors.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chartErrors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             chartArea1.AxisX.Title = "Iteracje";
             chartArea1.AxisY.Title = "Wartość błędu";
             chartArea1.Name = "ChartArea1";
             this.chartErrors.ChartAreas.Add(chartArea1);
+            this.chartErrors.Cursor = System.Windows.Forms.Cursors.Default;
             legend1.Name = "Legend1";
             this.chartErrors.Legends.Add(legend1);
-            this.chartErrors.Location = new System.Drawing.Point(16, 76);
-            this.chartErrors.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chartErrors.Location = new System.Drawing.Point(21, 94);
+            this.chartErrors.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chartErrors.Name = "chartErrors";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
@@ -118,16 +118,16 @@
             this.chartErrors.Series.Add(series2);
             this.chartErrors.Series.Add(series3);
             this.chartErrors.Series.Add(series4);
-            this.chartErrors.Size = new System.Drawing.Size(404, 284);
+            this.chartErrors.Size = new System.Drawing.Size(539, 350);
             this.chartErrors.TabIndex = 18;
             this.chartErrors.Text = "Błędy";
             // 
             // buttonLoadNetwork
             // 
-            this.buttonLoadNetwork.Location = new System.Drawing.Point(135, 21);
-            this.buttonLoadNetwork.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonLoadNetwork.Location = new System.Drawing.Point(180, 26);
+            this.buttonLoadNetwork.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonLoadNetwork.Name = "buttonLoadNetwork";
-            this.buttonLoadNetwork.Size = new System.Drawing.Size(103, 28);
+            this.buttonLoadNetwork.Size = new System.Drawing.Size(137, 34);
             this.buttonLoadNetwork.TabIndex = 19;
             this.buttonLoadNetwork.Text = "Wczytaj sieć";
             this.buttonLoadNetwork.UseVisualStyleBackColor = true;
@@ -138,24 +138,25 @@
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Location = new System.Drawing.Point(478, 76);
+            this.pictureBox1.Location = new System.Drawing.Point(637, 94);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(382, 281);
+            this.pictureBox1.Size = new System.Drawing.Size(509, 346);
             this.pictureBox1.TabIndex = 20;
             this.pictureBox1.TabStop = false;
             // 
             // mainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(872, 369);
+            this.ClientSize = new System.Drawing.Size(1163, 454);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.buttonLoadNetwork);
             this.Controls.Add(this.chartErrors);
             this.Controls.Add(this.buttonTest);
             this.Controls.Add(this.buttonTrain);
             this.Controls.Add(this.buttonGetInputFile);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "mainForm";
             this.Text = "Autoencoder";
             ((System.ComponentModel.ISupportInitialize)(this.chartErrors)).EndInit();

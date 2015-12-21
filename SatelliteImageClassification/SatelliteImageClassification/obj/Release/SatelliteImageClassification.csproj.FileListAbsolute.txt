@@ -40,3 +40,5 @@ C:\Users\Kuba\Desktop\Sieci neuronowe\SatelliteImageClassification\SatelliteImag
 C:\Users\Kuba\Desktop\Sieci neuronowe\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.csproj.GenerateResource.Cache
 C:\Users\Kuba\Desktop\Sieci neuronowe\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.ImageForm.resources
 C:\Users\Kuba\Desktop\Sieci neuronowe\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.SegmentsViewer.resources
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.ImageForm.resources
+C:\Users\Mateusz\Desktop\repozytoria\Neural-Network\SatelliteImageClassification\SatelliteImageClassification\obj\Release\SatelliteImageClassification.SegmentsViewer.resources
