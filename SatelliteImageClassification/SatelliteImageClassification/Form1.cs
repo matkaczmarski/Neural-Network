@@ -206,7 +206,7 @@ namespace SatelliteImageClassification
             if2.Text = "Ideal";
             if2.Show();
 
-            MessageBox.Show("\n LICZBA BŁĘDNYCH PIXELI: " + res.WrongPixels + "\n LICZBA POPRAWNYCH PIXELI: " + res.CorrectPixels + "\n PROCENT POPRAWNYCH PIXELI: " + res.Percentage + "\n LICZBA PIXELI BUDYNKÓW: " + res.BuildingPixels + "\n LICZBA BŁĘDNYCH PIXELI BUDYNKÓW: " + res.WrongBuildingPixels + "\n LICZBA PIXELI TERENU: " + res.TerrainPixels + "\n LCIZBA BŁĘDNYCH PIXELI TERENU: " + res.WrongTerrainPixels);
+            MessageBox.Show("\n LICZBA BŁĘDNYCH PIXELI: " + res.WrongPixels + "\n LICZBA POPRAWNYCH PIXELI: " + res.CorrectPixels + "\n PROCENT POPRAWNYCH PIXELI: " + res.Percentage + "\n LICZBA PIXELI BUDYNKÓW: " + res.BuildingPixels + "\n LICZBA BŁĘDNYCH PIXELI BUDYNKÓW: " + res.WrongBuildingPixels + "\n LICZBA PIXELI TERENU: " + res.TerrainPixels + "\n LCIZBA BŁĘDNYCH PIXELI TERENU: " + res.WrongTerrainPixels + "\n TP BUDYNKI: " + res.TruePositiveBuildings + "\n TP TEREN: " + res.TruePositiveTerrain);
         }
 
         private TestResult TestResultBitmap(Bitmap result, Bitmap ideal)
@@ -223,7 +223,10 @@ namespace SatelliteImageClassification
                     {
                         testResult.BuildingPixels++;
                         if (ideal.GetPixel(x, y).ToArgb() != Color.White.ToArgb())
+                        {
                             testResult.CorrectPixels++;
+                            testResult.TruePositiveBuildings++;
+                        }
                         else
                         {
                             testResult.WrongPixels++;
@@ -239,7 +242,10 @@ namespace SatelliteImageClassification
                             testResult.WrongTerrainPixels++;
                         }
                         else
+                        {
+                            testResult.TruePositiveTerrain++;
                             testResult.CorrectPixels++;
+                        }
                     }
                 }
 
