@@ -168,7 +168,7 @@ namespace SatelliteImageClassification
             {
                 double[,][] segment = SegmentationData.CovertFrom1DArray(trainingData[i]);
                 int computedVal = (int)autoencoder.Compute(testSet[i]);
-                if (computedVal != testResult[i])//(computedVal == 0)
+                if /*(computedVal != testResult[i])//*/(computedVal == 0)
                 {
                     for (int x = 0; x < training.Segments[i].Width; x++)
                     {
@@ -183,16 +183,17 @@ namespace SatelliteImageClassification
                 {
                     wrongAnswers++;
                 }
-                if (computedVal == testResult[i])
-                {
-                    for (int x = 0; x < training.Segments[i].Width; x++)
-                    {
-                        for (int y = 0; y < training.Segments[i].Height; y++)
-                        {
-                            originalImage.SetPixel(x + training.Positions[i].X, y + training.Positions[i].Y, Color.FromArgb(50, 255, 255, 255));
-                        }
-                    }                
-                }
+                //if (computedVal == testResult[i])
+                //{
+                //    for (int x = 0; x < training.Segments[i].Width; x++)
+                //    {
+                //        for (int y = 0; y < training.Segments[i].Height; y++)
+                //        {
+                //            if (segment[x, y][0] >= 0)
+                //                originalImage.SetPixel(x + training.Positions[i].X, y + training.Positions[i].Y, Color.Red);
+                //        }
+                //    }                
+                //}
             }
             this.pictureBox1.Image = originalImage;
             

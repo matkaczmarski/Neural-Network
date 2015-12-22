@@ -25,8 +25,8 @@ namespace SegmentsForNN
         {
             InitializeComponent();
 
-            Bitmap sourceImage = new Bitmap("C:\\Users\\Kuba\\Desktop\\lab4\\IN_OpenCV\\original_1.png");
-            Bitmap image = LoadImage("C:\\Users\\Kuba\\Desktop\\lab4\\IN_OpenCV\\some_name.txt");//, out sourceImage);
+            Bitmap sourceImage = new Bitmap(@"C:\Users\Kuba\Documents\GitHub\Neural-Network\wyniki\originals\original_6.png");
+            Bitmap image = LoadImage(@"C:\Users\Kuba\Documents\GitHub\Neural-Network\wyniki\segments\segments_6.txt");//, out sourceImage);
             pictureBox1.Image = image;
 
             List<Bitmap> segments = LoadSegments(sourceImage, image);

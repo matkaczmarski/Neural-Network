@@ -131,8 +131,8 @@ namespace SatelliteImageClassification
 
             foreach (KeyValuePair<int, SegmentData> elem in nrOfElementsInSegment)
             {
-                //if (elem.Value.NrOfElements > average || elem.Value.NrOfElements < average / 4)
-                //    continue;
+                if (/*elem.Value.NrOfElements > average ||*/ elem.Value.NrOfElements < 16)
+                    continue;
                 double[,][] segment = new double[elem.Value.MaxX - elem.Value.MinX + 1, elem.Value.MaxY - elem.Value.MinY + 1][];
                 bool[,] isBuildingPixel = new bool[elem.Value.MaxX - elem.Value.MinX + 1, elem.Value.MaxY - elem.Value.MinY + 1];
                 for (int x = 0; x < segment.GetLength(0); x++)
@@ -194,19 +194,21 @@ namespace SatelliteImageClassification
                 {
                     int div_x = segment.GetLength(0) / MAX_SEGMENT_SIZE;
                     int rest_x = segment.GetLength(0) - MAX_SEGMENT_SIZE * div_x;
+                    int stop_x = (rest_x == 0) ? div_x : div_x + 1;
 
                     int div_y = segment.GetLength(1) / MAX_SEGMENT_SIZE;
                     int rest_y = segment.GetLength(1) - MAX_SEGMENT_SIZE * div_y;
+                    int stop_y = (rest_y == 0) ? div_y : div_y + 1;
 
                     List<double[,][]> subSegments = new List<double[,][]>();
                     // Liczenenie punktów startowych do podziału
                     List<Point> startPoints = new List<Point>();
-                    for (int x = 0; x < div_x + 1; x++)
+                    for (int x = 0; x < stop_x; x++)
                     {
                         int point_x = x * MAX_SEGMENT_SIZE;
                         if (x == div_x)
                             point_x -= (MAX_SEGMENT_SIZE - rest_x);
-                        for (int y = 0; y < div_y + 1; y++)
+                        for (int y = 0; y < stop_y; y++)
                         {
                             int point_y = y * MAX_SEGMENT_SIZE;
                             if (y == div_y)
