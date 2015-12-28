@@ -21,5 +21,7 @@ namespace SatelliteImageClassification
         public int WrongBuildingPixels { get; set; }
         public int TerrainPixels { get; set; }
         public int WrongTerrainPixels { get; set; }
+        public int TruePositiveBuildings { get; set; }
+        public int TruePositiveTerrain { get; set; }
     }
 }
