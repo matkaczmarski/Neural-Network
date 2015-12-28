@@ -51,7 +51,7 @@ namespace SatelliteImageClassification
             chartErrors.Series["Layer4"].Points.Clear();
 
             string path = Directory.GetCurrentDirectory() + "\\";
-            SegmentationData.MAX_SEGMENT_SIZE = 8;
+            SegmentationData.MAX_SEGMENT_SIZE = 6;
             training = SegmentationData.GetTrainingData(path + "originals", path + "segments", path + "buildings", out originalImage);
             trainingData = training.Vectors;
             idealData = training.Ideal;
@@ -109,7 +109,7 @@ namespace SatelliteImageClassification
         private void buttonTrain_Click(object sender, EventArgs e)
         {
             //autoencoder = new Autoencoder(new List<int>() { digitVectorSize, 100, 50, 10 });//new List<int>() { digitVectorSize, 100 });
-            autoencoder = new Autoencoder(new List<int>() { SegmentationData.MAX_SEGMENT_SIZE * SegmentationData.MAX_SEGMENT_SIZE * 3 + 4, 100, 50, 3 });
+            autoencoder = new Autoencoder(new List<int>() { SegmentationData.MAX_SEGMENT_SIZE * SegmentationData.MAX_SEGMENT_SIZE * 3 + 4, 200, 60, 3 });
             List<double[]> errors = autoencoder.Learn(trainingData, idealData);
             
             chartErrors.Series["Layer1"].Points.Clear();
@@ -127,23 +127,6 @@ namespace SatelliteImageClassification
             }
             
         }
-
-        private double[][] GenerateRandomTrainingSet(int vectorSize, int setSize)
-        {
-            double[][] set= new double[setSize][];
-            Random rand = new Random();
-            for (int i = 0; i < setSize; i++)
-            {
-                set[i] = new double[vectorSize];
-                double[] vector = new double[vectorSize];
-                for (int j = 0; j < vectorSize; j++ )
-                    vector[j] = rand.Next(2);
-                vector.CopyTo(set[i], 0);
-            }
-            return set;
-        }
-
-
 
         private void buttonTest_Click(object sender, EventArgs e)
         {
@@ -168,14 +151,17 @@ namespace SatelliteImageClassification
             {
                 double[,][] segment = SegmentationData.CovertFrom1DArray(trainingData[i]);
                 int computedVal = (int)autoencoder.Compute(testSet[i]);
-                if (computedVal != testResult[i])//(computedVal == 0)
+                if (computedVal == 0)
                 {
                     for (int x = 0; x < training.Segments[i].Width; x++)
                     {
                         for (int y = 0; y < training.Segments[i].Height; y++)
                         {
-                            if (segment[x,y][0] >= 0)
+                            if (segment[x, y][0] >= 0)
+                            {
                                 resultBitmap.SetPixel(x + training.Positions[i].X, y + training.Positions[i].Y, Color.Red);
+                                originalImage.SetPixel(x + training.Positions[i].X, y + training.Positions[i].Y, Color.FromArgb(50, 255, 255, 255));
+                            }
                         }
                     } 
                 }
@@ -183,6 +169,7 @@ namespace SatelliteImageClassification
                 {
                     wrongAnswers++;
                 }
+                /*
                 if (computedVal == testResult[i])
                 {
                     for (int x = 0; x < training.Segments[i].Width; x++)
@@ -193,6 +180,7 @@ namespace SatelliteImageClassification
                         }
                     }                
                 }
+                 * */
             }
             this.pictureBox1.Image = originalImage;
             

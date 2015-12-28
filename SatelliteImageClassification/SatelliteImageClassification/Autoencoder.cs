@@ -197,7 +197,7 @@ namespace SatelliteImageClassification
 
             try
             {
-                string networkFileName = "INNE";
+                string networkFileName = "autoencoder 122 200 60 3";
                 EncogDirectoryPersistence.SaveObject(new FileInfo(networkFileName), network);
                 MessageBox.Show("NETWORK SAVED TO FILE " + networkFileName);
             }
