@@ -51,7 +51,7 @@ namespace SatelliteImageClassification
             chartErrors.Series["Layer4"].Points.Clear();
 
             string path = Directory.GetCurrentDirectory() + "\\";
-            SegmentationData.MAX_SEGMENT_SIZE = 6;
+            SegmentationData.MAX_SEGMENT_SIZE = 5;
             training = SegmentationData.GetTrainingData(path + "originals", path + "segments", path + "buildings", out originalImage);
             trainingData = training.Vectors;
             idealData = training.Ideal;
@@ -109,7 +109,8 @@ namespace SatelliteImageClassification
         private void buttonTrain_Click(object sender, EventArgs e)
         {
             //autoencoder = new Autoencoder(new List<int>() { digitVectorSize, 100, 50, 10 });//new List<int>() { digitVectorSize, 100 });
-            autoencoder = new Autoencoder(new List<int>() { SegmentationData.MAX_SEGMENT_SIZE * SegmentationData.MAX_SEGMENT_SIZE * 3 + 4, 200, 60, 3 });
+            autoencoder = new Autoencoder(new List<int>() { SegmentationData.MAX_SEGMENT_SIZE * SegmentationData.MAX_SEGMENT_SIZE * 3 + 4, 100, 30, 3 });
+            autoencoder.ActiveForm = this;
             List<double[]> errors = autoencoder.Learn(trainingData, idealData);
             
             chartErrors.Series["Layer1"].Points.Clear();
@@ -193,7 +194,7 @@ namespace SatelliteImageClassification
             if2.Text = "Ideal";
             if2.Show();
 
-            MessageBox.Show("\n LICZBA BŁĘDNYCH PIXELI: " + res.WrongPixels + "\n LICZBA POPRAWNYCH PIXELI: " + res.CorrectPixels + "\n PROCENT POPRAWNYCH PIXELI: " + res.Percentage + "\n LICZBA PIXELI BUDYNKÓW: " + res.BuildingPixels + "\n LICZBA BŁĘDNYCH PIXELI BUDYNKÓW: " + res.WrongBuildingPixels + "\n LICZBA PIXELI TERENU: " + res.TerrainPixels + "\n LCIZBA BŁĘDNYCH PIXELI TERENU: " + res.WrongTerrainPixels);
+            MessageBox.Show("\n LICZBA BŁĘDNYCH PIXELI: " + res.WrongPixels + "\n LICZBA POPRAWNYCH PIXELI: " + res.CorrectPixels + "\n PROCENT POPRAWNYCH PIXELI: " + res.Percentage + "\n LICZBA PIXELI BUDYNKÓW: " + res.BuildingPixels + "\n LICZBA BŁĘDNYCH PIXELI BUDYNKÓW: " + res.WrongBuildingPixels + "\n LICZBA PIXELI TERENU: " + res.TerrainPixels + "\n LCIZBA BŁĘDNYCH PIXELI TERENU: " + res.WrongTerrainPixels + "\n TP BUILDINGS: " + res.TruePositiveBuildings + "\n TP TERRAIN: " + res.TruePositiveTerrain);
         }
 
         private TestResult TestResultBitmap(Bitmap result, Bitmap ideal)

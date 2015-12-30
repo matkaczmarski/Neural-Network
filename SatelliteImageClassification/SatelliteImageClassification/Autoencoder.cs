@@ -30,6 +30,8 @@ namespace SatelliteImageClassification
         const double LEARNING_RATE = 0.1;
         const double MOMENTUM = 0.5;
 
+        public Form ActiveForm { get; set; }
+
         private IActivationFunction CurrentActivationFunction()
         {
             return new ActivationTANH();
@@ -72,6 +74,7 @@ namespace SatelliteImageClassification
             do
             {
                 train.Iteration();
+                ActiveForm.Text = @"Epoch #" + epoch + @" Error:" + train.Error;
                 Console.WriteLine(@"Epoch #" + epoch + @" Error:" + train.Error);
                 trainError[epoch - 1] = train.Error;
                 epoch++;
@@ -128,6 +131,7 @@ namespace SatelliteImageClassification
                 do
                 {
                     train.Iteration();
+                    ActiveForm.Text = @"Epoch #" + epoch + @" Error:" + train.Error;
                     Console.WriteLine(@"Epoch #" + epoch + @" Error:" + train.Error);
                     trainError[epoch - 1] = train.Error;
                     epoch++;
@@ -188,6 +192,7 @@ namespace SatelliteImageClassification
             do
             {
                 train.Iteration();
+                ActiveForm.Text = @"Epoch #" + epoch + @" Error:" + train.Error;
                 Console.WriteLine(@"Epoch #" + epoch + @" Error:" + train.Error);
                 trainError[epoch - 1] = train.Error;
                 epoch++;
@@ -197,7 +202,7 @@ namespace SatelliteImageClassification
 
             try
             {
-                string networkFileName = "autoencoder 122 200 60 3";
+                string networkFileName = "autoencoder 79 100 30 3";
                 EncogDirectoryPersistence.SaveObject(new FileInfo(networkFileName), network);
                 MessageBox.Show("NETWORK SAVED TO FILE " + networkFileName);
             }

@@ -44,6 +44,20 @@ namespace SatelliteImageClassification
                 Bitmap buildingsImage = new Bitmap(buildings[i]);
                 Bitmap segmentsImage = LoadImage(segments[i], out matrix, out nrOfElementsInSegment, out average);
 
+                /*Bitmap idealResult = new Bitmap(originalImage.Width, originalImage.Height);
+                for (int x = 0; x < idealResult.Width; x++)
+                    for (int y = 0; y < idealResult.Height; y++)
+                        if (buildingsImage.GetPixel(x, y).ToArgb() != Color.White.ToArgb())
+                            idealResult.SetPixel(x, y, originalImage.GetPixel(x, y));
+                        else
+                            idealResult.SetPixel(x, y, Color.White);
+                ImageForm idealForm = new ImageForm(idealResult);
+                idealForm.Text = "IDEAL RESULT";
+                idealForm.ShowDialog();
+
+                ImageForm segForm = new ImageForm(segmentsImage);
+                segForm.ShowDialog();*/
+
                 List<Point> points;
                 List<Bitmap> segmentsImages;
                 Tuple<List<double[]>, List<double[]>> result = LoadSegments(originalImage, buildingsImage, matrix, nrOfElementsInSegment, average, out points, out segmentsImages);
@@ -78,6 +92,8 @@ namespace SatelliteImageClassification
                 for (int j = 0; j < parts.Length; j++)
                 {
                     int index = Int32.Parse(parts[j]);
+                    if (index == -1)
+                        continue;
                     if (nrOfElementsInSegment.ContainsKey(index))
                     {
                         nrOfElementsInSegment[index].NrOfElements++;
@@ -106,18 +122,21 @@ namespace SatelliteImageClassification
 
             for (int i = 0; i < nrOfElementsInSegment.Count; i++)
             {
-                if (nrOfElementsInSegment.ElementAt(i).Value.NrOfElements > average || nrOfElementsInSegment.ElementAt(i).Value.NrOfElements < average / 4)
+                if (/*nrOfElementsInSegment.ElementAt(i).Value.NrOfElements > average || */nrOfElementsInSegment.ElementAt(i).Value.NrOfElements < 16)
                     nrOfElementsInSegment[nrOfElementsInSegment.ElementAt(i).Key].ColorOfSegment = Color.Black;
             }
 
             Bitmap generatedImage = new Bitmap(x, y);
-            for (int i = 0; i < x; i++)
+            /*for (int i = 0; i < x; i++)
             {
                 for (int j = 0; j < y; j++)
                 {
-                    generatedImage.SetPixel(i, j, nrOfElementsInSegment[matrix[i, j]].ColorOfSegment);
+                    if (matrix[i, j] == -1)
+                        generatedImage.SetPixel(i, j, Color.Black);
+                    else
+                        generatedImage.SetPixel(i, j, nrOfElementsInSegment[matrix[i, j]].ColorOfSegment);
                 }
-            }
+            }*/
 
             return generatedImage;
         }
@@ -154,16 +173,17 @@ namespace SatelliteImageClassification
                         }
                     }
                 }
-                /*Bitmap bitmap = new Bitmap(isBuildingPixel.GetLength(0), isBuildingPixel.GetLength(1));
-                Bitmap segBitmap = GetBitmapFromDoubleArray(segment);
-                for (int x = 0; x < segBitmap.Width; x++)
-                    for (int y = 0; y < segBitmap.Height; y++)
-                        if (isBuildingPixel[x, y])
-                            bitmap.SetPixel(x, y, segBitmap.GetPixel(x, y));
-                        else
-                            bitmap.SetPixel(x, y, Color.White);
-                ImageForm imageForm = new ImageForm(bitmap);
-                imageForm.ShowDialog();*/
+                //Bitmap bitmap = new Bitmap(isBuildingPixel.GetLength(0), isBuildingPixel.GetLength(1));
+                //Bitmap segBitmap = GetBitmapFromDoubleArray(segment);
+                //for (int x = 0; x < segBitmap.Width; x++)
+                //    for (int y = 0; y < segBitmap.Height; y++)
+                //        if (isBuildingPixel[x, y])
+                //            bitmap.SetPixel(x, y, segBitmap.GetPixel(x, y));
+                //        else
+                //            bitmap.SetPixel(x, y, Color.White);
+                /*ImageForm imageForm = new ImageForm(segBitmap);
+                imageForm.Text = "X = " + elem.Value.MinX + " Y = " + elem.Value.MinY;
+                imageForm.Show();*/
                 // Trzeba rozszerzyć segment
                 if (segment.GetLength(0) < MAX_SEGMENT_SIZE || segment.GetLength(1) < MAX_SEGMENT_SIZE)
                 {
@@ -206,13 +226,13 @@ namespace SatelliteImageClassification
                     for (int x = 0; x < stop_x; x++)
                     {
                         int point_x = x * MAX_SEGMENT_SIZE;
-                        if (x == div_x)
-                            point_x -= (MAX_SEGMENT_SIZE - rest_x);
+                        //if (x == div_x)
+                        //    point_x -= (MAX_SEGMENT_SIZE - rest_x);
                         for (int y = 0; y < stop_y; y++)
                         {
                             int point_y = y * MAX_SEGMENT_SIZE;
-                            if (y == div_y)
-                                point_y -= (MAX_SEGMENT_SIZE - rest_y);
+                        //    if (y == div_y)
+                        //        point_y -= (MAX_SEGMENT_SIZE - rest_y);
 
                             startPoints.Add(new Point(point_x, point_y));
                         }
@@ -224,7 +244,12 @@ namespace SatelliteImageClassification
                         double[,][] subSegment = new double[MAX_SEGMENT_SIZE, MAX_SEGMENT_SIZE][];
                         for (int x = 0; x < MAX_SEGMENT_SIZE; x++)
                             for (int y = 0; y < MAX_SEGMENT_SIZE; y++)
-                                subSegment[x, y] = segment[x + startPoint.X, y + startPoint.Y];
+                            {
+                                if (x + startPoint.X >= segment.GetLength(0) || y + startPoint.Y >= segment.GetLength(1))
+                                    subSegment[x, y] = new double[] { -1, -1, -1 };
+                                else
+                                    subSegment[x, y] = segment[x + startPoint.X, y + startPoint.Y];
+                            }
 
                         int isBuilding = 0;
                         int isSomethingElse = 0;
@@ -232,12 +257,18 @@ namespace SatelliteImageClassification
                         {
                             for (int y = 0; y < subSegment.GetLength(1); y++)
                             {
-                                if (isBuildingPixel[x + startPoint.X, y + startPoint.Y])
+                                if (x + startPoint.X >= isBuildingPixel.GetLength(0) || y + startPoint.Y >= isBuildingPixel.GetLength(1))
+                                    continue;
+                                else if (subSegment[x, y][0] == -1)
+                                    continue;
+                                else if (isBuildingPixel[x + startPoint.X, y + startPoint.Y])
                                     isBuilding++;
                                 else
                                     isSomethingElse++;
                             }
                         }
+                        if (isBuilding + isSomethingElse < MAX_SEGMENT_SIZE * MAX_SEGMENT_SIZE / 4)
+                            continue;
                         if (isBuilding >= isSomethingElse)
                             ideal.Add(new double[] { 1, 0, 0 });
                         else
@@ -250,6 +281,12 @@ namespace SatelliteImageClassification
 
                         segmentsImages.Add(GetBitmapFromDoubleArray(subSegment));
                         positions.Add(position);
+
+                        /*if (isBuilding > isSomethingElse)
+                        {
+                            ImageForm imForm = new ImageForm(GetBitmapFromDoubleArray(subSegment));
+                            imForm.ShowDialog();
+                        }*/
                     }
                 }
                 else
@@ -260,12 +297,16 @@ namespace SatelliteImageClassification
                     {
                         for (int y = 0; y < isBuildingPixel.GetLength(1); y++)
                         {
+                            if (segment[x, y][0] == -1)
+                                continue;
                             if (isBuildingPixel[x, y])
                                 isBuilding++;
                             else
                                 isSomethingElse++;
                         }
                     }
+                    if (isBuilding + isSomethingElse < MAX_SEGMENT_SIZE * MAX_SEGMENT_SIZE / 4)
+                        continue;
                     if (isBuilding >= isSomethingElse)
                         ideal.Add(new double[] { 1, 0, 0 });
                     else
