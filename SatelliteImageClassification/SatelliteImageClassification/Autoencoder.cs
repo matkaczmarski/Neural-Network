@@ -191,6 +191,7 @@ namespace SatelliteImageClassification
                 Console.WriteLine(@"Epoch #" + epoch + @" Error:" + train.Error);
                 trainError[epoch - 1] = train.Error;
                 epoch++;
+                
             } while (train.Error > EPS && epoch < FINAL_NETWORK_MAX_ITER);
             errors.Add(trainError);
             train.FinishTraining();
