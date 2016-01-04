@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Autoencoder.cs" />
+    <Compile Include="AutoencoderWoCmp.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

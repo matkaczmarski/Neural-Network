@@ -37,6 +37,8 @@ namespace SatelliteImageClassification
         const int DIGITSCOUNT = 10;
 
         Autoencoder autoencoder;
+        //AutoencoderWoCmp autoencoder;
+
         TrainingData training;
 
         Bitmap originalImage;
@@ -51,7 +53,7 @@ namespace SatelliteImageClassification
             chartErrors.Series["Layer4"].Points.Clear();
 
             string path = Directory.GetCurrentDirectory() + "\\";
-            SegmentationData.MAX_SEGMENT_SIZE = 5;
+            SegmentationData.MAX_SEGMENT_SIZE = 10;
             training = SegmentationData.GetTrainingData(path + "originals", path + "segments", path + "buildings", out originalImage);
             trainingData = training.Vectors;
             idealData = training.Ideal;
@@ -109,7 +111,9 @@ namespace SatelliteImageClassification
         private void buttonTrain_Click(object sender, EventArgs e)
         {
             //autoencoder = new Autoencoder(new List<int>() { digitVectorSize, 100, 50, 10 });//new List<int>() { digitVectorSize, 100 });
-            autoencoder = new Autoencoder(new List<int>() { SegmentationData.MAX_SEGMENT_SIZE * SegmentationData.MAX_SEGMENT_SIZE * 3 + 4, 100, 30, 3 });
+            autoencoder = new Autoencoder(new List<int>() { SegmentationData.MAX_SEGMENT_SIZE * SegmentationData.MAX_SEGMENT_SIZE * 3 + 4, 125, 50, 3 });
+            //autoencoder = new AutoencoderWoCmp(new List<int>() { SegmentationData.MAX_SEGMENT_SIZE * SegmentationData.MAX_SEGMENT_SIZE * 3 + SegmentationData.SEGMENT_NEIGHBOURS, 100, 30, 3 });
+            
             autoencoder.ActiveForm = this;
             List<double[]> errors = autoencoder.Learn(trainingData, idealData);
             
@@ -246,6 +250,7 @@ namespace SatelliteImageClassification
                 try
                 {
                     autoencoder = new Autoencoder(null);
+                    //autoencoder = new AutoencoderWoCmp(null);
                     autoencoder.LoadNetwork(openFileDialog.FileName);
                 }
                 catch (Exception ex)

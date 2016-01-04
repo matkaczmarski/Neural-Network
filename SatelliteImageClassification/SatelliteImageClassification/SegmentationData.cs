@@ -12,6 +12,7 @@ namespace SatelliteImageClassification
     {
         private static Random rand = new Random();
         public static int MAX_SEGMENT_SIZE = 20;
+        public static int SEGMENT_NEIGHBOURS = 4;
 
         private SegmentationData() { }
 

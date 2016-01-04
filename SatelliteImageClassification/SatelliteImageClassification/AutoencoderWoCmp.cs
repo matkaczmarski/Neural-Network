@@ -1,10 +1,10 @@
-﻿using Encog.Engine.Network.Activation;
+﻿using Encog.Bot.Browse.Range;
+using Encog.Engine.Network.Activation;
 using Encog.ML.Data;
 using Encog.ML.Data.Basic;
 using Encog.ML.Train;
 using Encog.Neural.Networks;
 using Encog.Neural.Networks.Layers;
-using Encog.Neural.Networks.Training.Propagation.Back;
 using Encog.Neural.Networks.Training.Propagation.Resilient;
 using Encog.Persist;
 using System;
@@ -17,11 +17,11 @@ using System.Windows.Forms;
 
 namespace SatelliteImageClassification
 {
-    public class Autoencoder
+    public class AutoencoderWoCmp
     {
         const double EPS = 1e-6;
-        const long AUTOENCODER_MAX_ITER = 350;
-        const long FINAL_NETWORK_MAX_ITER = 500;
+        const long AUTOENCODER_MAX_ITER = 200;
+        const long FINAL_NETWORK_MAX_ITER = 300;
         List<int> layersConfiguration;
 
         BasicNetwork network;
@@ -30,14 +30,16 @@ namespace SatelliteImageClassification
         const double LEARNING_RATE = 0.1;
         const double MOMENTUM = 0.5;
 
-        public Form ActiveForm { get; set; }
+       // const int SEGMENT_NEIGHBOURS = 4;
+
+        public System.Windows.Forms.Form ActiveForm { get; set; }
 
         private IActivationFunction CurrentActivationFunction()
         {
             return new ActivationTANH();
         }
 
-        public Autoencoder(List<int> layersConfig)
+        public AutoencoderWoCmp(List<int> layersConfig)
         {
             layersConfiguration = layersConfig;
         }
@@ -48,14 +50,21 @@ namespace SatelliteImageClassification
             int n = data.Length;
             int m = data[0].Length;
             double[][] output = new double[n][];
+            double[][] sgmNeighbours = new double[n][];
             for (var i = 0; i < n; i++)
             {
-                output[i] = new double[m];
+                double[] sgmN = new double[SegmentationData.SEGMENT_NEIGHBOURS];
+                Array.Copy(data[i], m - SegmentationData.SEGMENT_NEIGHBOURS, sgmN, 0, SegmentationData.SEGMENT_NEIGHBOURS);
+                sgmNeighbours[i] = sgmN;
+                data[i] = data[i].Take(m - SegmentationData.SEGMENT_NEIGHBOURS).ToArray();
+                output[i] = new double[m - SegmentationData.SEGMENT_NEIGHBOURS];
                 data[i].CopyTo(output[i], 0);
             }
+
+
             IMLDataSet trainingSet = new BasicMLDataSet(data, output);
-            
-            int inputLayerSize = layersConfiguration[0];
+
+            int inputLayerSize = layersConfiguration[0] - SegmentationData.SEGMENT_NEIGHBOURS;
             int trainingLayerSize = layersConfiguration[1];
             BasicNetwork oneLayerAutoencoder = new BasicNetwork();
             oneLayerAutoencoder.AddLayer(new BasicLayer(null, BIAS, inputLayerSize));
@@ -169,18 +178,20 @@ namespace SatelliteImageClassification
 
             //tworzenie struktury ostatecznej sieci
             network = new BasicNetwork();
-            network.AddLayer(new BasicLayer(null, BIAS, encoder.GetLayerNeuronCount(0)));
+            network.AddLayer(new BasicLayer(null, BIAS, encoder.GetLayerNeuronCount(0) + SegmentationData.SEGMENT_NEIGHBOURS));
             for (int el = 1; el < encoder.LayerCount; el++)
-                network.AddLayer(new BasicLayer(CurrentActivationFunction(), BIAS, encoder.GetLayerNeuronCount(el)));
+                network.AddLayer(new BasicLayer(CurrentActivationFunction(), BIAS, encoder.GetLayerNeuronCount(el) + SegmentationData.SEGMENT_NEIGHBOURS));
             network.AddLayer(new BasicLayer(CurrentActivationFunction(), false, layersConfiguration[layersConfiguration.Count - 1]));
             network.Structure.FinalizeStructure();
-            network.Reset();
+            //network.Reset();
 
             for (int i = 0; i < encoder.LayerCount - 1; i++)
                 for (int f = 0; f < encoder.GetLayerNeuronCount(i); f++)
                     for (int t = 0; t < encoder.GetLayerNeuronCount(i + 1); t++)
                             network.SetWeight(i, f, t, encoder.GetWeight(i, f, t));
 
+            //dla innych ustawic wagi 0, dla samych sobie 1
+            
 
             //uczenie koncowej sieci
             trainingSet = new BasicMLDataSet(data, ideal);
@@ -203,7 +214,7 @@ namespace SatelliteImageClassification
 
             try
             {
-                string networkFileName = "autoencoder 304 125 50 3";
+                string networkFileName = "autoencoder 79 100 30 3";
                 EncogDirectoryPersistence.SaveObject(new FileInfo(networkFileName), network);
                 MessageBox.Show("NETWORK SAVED TO FILE " + networkFileName);
             }
@@ -279,6 +290,5 @@ namespace SatelliteImageClassification
             }
             MessageBox.Show(oneLay);
         }
-
     }
 }
