@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.buttonGetInputFile = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -47,18 +47,18 @@
             this.comboBoxActivationFunction = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.label8 = new System.Windows.Forms.Label();
             this.numericUpDownMomentum = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownLearningRate = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownIterationsCount = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownNeuronsCount = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownLayersCount = new System.Windows.Forms.NumericUpDown();
+            this.comboBoxProblemType = new System.Windows.Forms.ComboBox();
             this.buttonTrain = new System.Windows.Forms.Button();
             this.buttonTest = new System.Windows.Forms.Button();
             this.chartErrors = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.buttonLoadNetwork = new System.Windows.Forms.Button();
             this.chartTestResults = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.label8 = new System.Windows.Forms.Label();
-            this.comboBoxProblemType = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMomentum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLearningRate)).BeginInit();
@@ -213,6 +213,16 @@
             this.tableLayoutPanel.Size = new System.Drawing.Size(305, 479);
             this.tableLayoutPanel.TabIndex = 15;
             // 
+            // label8
+            // 
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(16, 437);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(119, 17);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "Rodzaj problemu:";
+            // 
             // numericUpDownMomentum
             // 
             this.numericUpDownMomentum.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -270,6 +280,19 @@
             this.numericUpDownLayersCount.Size = new System.Drawing.Size(100, 22);
             this.numericUpDownLayersCount.TabIndex = 17;
             // 
+            // comboBoxProblemType
+            // 
+            this.comboBoxProblemType.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.comboBoxProblemType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxProblemType.FormattingEnabled = true;
+            this.comboBoxProblemType.Items.AddRange(new object[] {
+            "klasyfikacja",
+            "regresja"});
+            this.comboBoxProblemType.Location = new System.Drawing.Point(168, 433);
+            this.comboBoxProblemType.Name = "comboBoxProblemType";
+            this.comboBoxProblemType.Size = new System.Drawing.Size(121, 24);
+            this.comboBoxProblemType.TabIndex = 23;
+            // 
             // buttonTrain
             // 
             this.buttonTrain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -298,25 +321,25 @@
             this.chartErrors.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea1.AxisX.Title = "Iteracje";
-            chartArea1.AxisY.Title = "Wartość błędu";
-            chartArea1.Name = "ChartArea1";
-            this.chartErrors.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chartErrors.Legends.Add(legend1);
+            chartArea3.AxisX.Title = "Iteracje";
+            chartArea3.AxisY.Title = "Wartość błędu";
+            chartArea3.Name = "ChartArea1";
+            this.chartErrors.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chartErrors.Legends.Add(legend3);
             this.chartErrors.Location = new System.Drawing.Point(344, 26);
             this.chartErrors.Name = "chartErrors";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series1.Legend = "Legend1";
-            series1.Name = "Błędy test.";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series2.Color = System.Drawing.Color.Red;
-            series2.Legend = "Legend1";
-            series2.Name = "Błędy walid.";
-            this.chartErrors.Series.Add(series1);
-            this.chartErrors.Series.Add(series2);
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series3.Legend = "Legend1";
+            series3.Name = "Błędy test.";
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series4.Color = System.Drawing.Color.Red;
+            series4.Legend = "Legend1";
+            series4.Name = "Błędy walid.";
+            this.chartErrors.Series.Add(series3);
+            this.chartErrors.Series.Add(series4);
             this.chartErrors.Size = new System.Drawing.Size(522, 275);
             this.chartErrors.TabIndex = 18;
             this.chartErrors.Text = "Błędy";
@@ -336,39 +359,16 @@
             this.chartTestResults.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea2.Name = "ChartArea1";
-            this.chartTestResults.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chartTestResults.Legends.Add(legend2);
+            chartArea4.Name = "ChartArea1";
+            this.chartTestResults.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            this.chartTestResults.Legends.Add(legend4);
             this.chartTestResults.Location = new System.Drawing.Point(344, 308);
             this.chartTestResults.Name = "chartTestResults";
             this.chartTestResults.Size = new System.Drawing.Size(522, 327);
             this.chartTestResults.TabIndex = 20;
             this.chartTestResults.Text = "chart1";
             this.chartTestResults.Visible = false;
-            // 
-            // label8
-            // 
-            this.label8.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(16, 437);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(119, 17);
-            this.label8.TabIndex = 22;
-            this.label8.Text = "Rodzaj problemu:";
-            // 
-            // comboBoxProblemType
-            // 
-            this.comboBoxProblemType.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.comboBoxProblemType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxProblemType.FormattingEnabled = true;
-            this.comboBoxProblemType.Items.AddRange(new object[] {
-            "klasyfikacja",
-            "regresja"});
-            this.comboBoxProblemType.Location = new System.Drawing.Point(168, 434);
-            this.comboBoxProblemType.Name = "comboBoxProblemType";
-            this.comboBoxProblemType.Size = new System.Drawing.Size(121, 24);
-            this.comboBoxProblemType.TabIndex = 23;
             // 
             // mainForm
             // 
