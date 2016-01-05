@@ -20,8 +20,8 @@ namespace SatelliteImageClassification
     public class AutoencoderWoCmp
     {
         const double EPS = 1e-6;
-        const long AUTOENCODER_MAX_ITER = 200;
-        const long FINAL_NETWORK_MAX_ITER = 300;
+        const long AUTOENCODER_MAX_ITER = 1000;
+        const long FINAL_NETWORK_MAX_ITER = 1500;
         List<int> layersConfiguration;
 
         BasicNetwork network;
@@ -29,8 +29,6 @@ namespace SatelliteImageClassification
         const bool BIAS = true;
         const double LEARNING_RATE = 0.1;
         const double MOMENTUM = 0.5;
-
-       // const int SEGMENT_NEIGHBOURS = 4;
 
         public System.Windows.Forms.Form ActiveForm { get; set; }
 
@@ -46,7 +44,8 @@ namespace SatelliteImageClassification
 
 
         public List<double[]> Learn(double[][] data, double[][] ideal)
-        {       
+        {
+            double[][] origData = (double[][])data.Clone();
             int n = data.Length;
             int m = data[0].Length;
             double[][] output = new double[n][];
@@ -183,18 +182,33 @@ namespace SatelliteImageClassification
                 network.AddLayer(new BasicLayer(CurrentActivationFunction(), BIAS, encoder.GetLayerNeuronCount(el) + SegmentationData.SEGMENT_NEIGHBOURS));
             network.AddLayer(new BasicLayer(CurrentActivationFunction(), false, layersConfiguration[layersConfiguration.Count - 1]));
             network.Structure.FinalizeStructure();
-            //network.Reset();
+            network.Reset();
 
+            /*
             for (int i = 0; i < encoder.LayerCount - 1; i++)
                 for (int f = 0; f < encoder.GetLayerNeuronCount(i); f++)
                     for (int t = 0; t < encoder.GetLayerNeuronCount(i + 1); t++)
                             network.SetWeight(i, f, t, encoder.GetWeight(i, f, t));
-
+            */
             //dla innych ustawic wagi 0, dla samych sobie 1
             
-
+            for (int i = 0; i < encoder.LayerCount - 1; i++)
+                for (int f = 0; f < network.GetLayerNeuronCount(i); f++)
+                    for (int t = 0; t < network.GetLayerNeuronCount(i + 1); t++)
+                    {
+                        if (f < encoder.GetLayerNeuronCount(i) && t >= encoder.GetLayerNeuronCount(i + 1))
+                            network.SetWeight(i, f, t, 0);
+                        else if (f >= encoder.GetLayerNeuronCount(i) && t < encoder.GetLayerNeuronCount(i + 1))
+                            network.SetWeight(i, f, t, 0);
+                        else if (f >= encoder.GetLayerNeuronCount(i) && t >= encoder.GetLayerNeuronCount(i + 1))
+                            network.SetWeight(i, f, t, 1);
+                        else
+                            network.SetWeight(i, f, t, encoder.GetWeight(i, f, t));
+                    }
+            
             //uczenie koncowej sieci
-            trainingSet = new BasicMLDataSet(data, ideal);
+            trainingSet = new BasicMLDataSet(origData, ideal);
+
             train = new ResilientPropagation(network, trainingSet);
             //train = new Backpropagation(network, trainingSet, LEARNING_RATE, MOMENTUM);
 
@@ -214,7 +228,7 @@ namespace SatelliteImageClassification
 
             try
             {
-                string networkFileName = "autoencoder 79 100 30 3";
+                string networkFileName = "autoencoder wo cmp 300 125 50 3";
                 EncogDirectoryPersistence.SaveObject(new FileInfo(networkFileName), network);
                 MessageBox.Show("NETWORK SAVED TO FILE " + networkFileName);
             }
