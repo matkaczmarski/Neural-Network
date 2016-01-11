@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.buttonGetInputFile = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.buttonTrain = new System.Windows.Forms.Button();
@@ -43,6 +43,7 @@
             this.buttonLoadNetwork = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel_pictureBox = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chartErrors)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel_pictureBox.SuspendLayout();
@@ -50,10 +51,10 @@
             // 
             // buttonGetInputFile
             // 
-            this.buttonGetInputFile.Location = new System.Drawing.Point(21, 26);
-            this.buttonGetInputFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonGetInputFile.Location = new System.Drawing.Point(16, 21);
+            this.buttonGetInputFile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonGetInputFile.Name = "buttonGetInputFile";
-            this.buttonGetInputFile.Size = new System.Drawing.Size(137, 34);
+            this.buttonGetInputFile.Size = new System.Drawing.Size(103, 28);
             this.buttonGetInputFile.TabIndex = 0;
             this.buttonGetInputFile.Text = "Dane treningowe";
             this.buttonGetInputFile.UseVisualStyleBackColor = true;
@@ -61,10 +62,10 @@
             // 
             // buttonTrain
             // 
-            this.buttonTrain.Location = new System.Drawing.Point(341, 26);
-            this.buttonTrain.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonTrain.Location = new System.Drawing.Point(256, 21);
+            this.buttonTrain.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonTrain.Name = "buttonTrain";
-            this.buttonTrain.Size = new System.Drawing.Size(137, 34);
+            this.buttonTrain.Size = new System.Drawing.Size(103, 28);
             this.buttonTrain.TabIndex = 16;
             this.buttonTrain.Text = "Ucz";
             this.buttonTrain.UseVisualStyleBackColor = true;
@@ -72,11 +73,11 @@
             // 
             // buttonTest
             // 
-            this.buttonTest.Location = new System.Drawing.Point(508, 26);
-            this.buttonTest.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonTest.Location = new System.Drawing.Point(381, 21);
+            this.buttonTest.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonTest.Name = "buttonTest";
             this.buttonTest.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.buttonTest.Size = new System.Drawing.Size(137, 34);
+            this.buttonTest.Size = new System.Drawing.Size(103, 28);
             this.buttonTest.TabIndex = 17;
             this.buttonTest.Text = "Testuj";
             this.buttonTest.UseVisualStyleBackColor = true;
@@ -86,51 +87,51 @@
             // 
             this.chartErrors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            chartArea1.AxisX.Title = "Iteracje";
-            chartArea1.AxisY.Title = "Wartość błędu";
-            chartArea1.Name = "ChartArea1";
-            this.chartErrors.ChartAreas.Add(chartArea1);
+            chartArea2.AxisX.Title = "Iteracje";
+            chartArea2.AxisY.Title = "Wartość błędu";
+            chartArea2.Name = "ChartArea1";
+            this.chartErrors.ChartAreas.Add(chartArea2);
             this.chartErrors.Cursor = System.Windows.Forms.Cursors.Default;
-            legend1.Name = "Legend1";
-            this.chartErrors.Legends.Add(legend1);
-            this.chartErrors.Location = new System.Drawing.Point(21, 94);
-            this.chartErrors.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            legend2.Name = "Legend1";
+            this.chartErrors.Legends.Add(legend2);
+            this.chartErrors.Location = new System.Drawing.Point(16, 76);
+            this.chartErrors.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chartErrors.Name = "chartErrors";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series1.Color = System.Drawing.Color.Blue;
-            series1.Legend = "Legend1";
-            series1.Name = "Layer1";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series2.Color = System.Drawing.Color.Red;
-            series2.Legend = "Legend1";
-            series2.Name = "Layer2";
-            series3.BorderWidth = 2;
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series3.Color = System.Drawing.Color.Black;
-            series3.Legend = "Legend1";
-            series3.Name = "Layer3";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series4.Color = System.Drawing.Color.Green;
-            series4.Legend = "Legend1";
-            series4.Name = "Layer4";
-            this.chartErrors.Series.Add(series1);
-            this.chartErrors.Series.Add(series2);
-            this.chartErrors.Series.Add(series3);
-            this.chartErrors.Series.Add(series4);
-            this.chartErrors.Size = new System.Drawing.Size(539, 350);
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series5.Color = System.Drawing.Color.Blue;
+            series5.Legend = "Legend1";
+            series5.Name = "Layer1";
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series6.Color = System.Drawing.Color.Red;
+            series6.Legend = "Legend1";
+            series6.Name = "Layer2";
+            series7.BorderWidth = 2;
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series7.Color = System.Drawing.Color.Black;
+            series7.Legend = "Legend1";
+            series7.Name = "Layer3";
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series8.Color = System.Drawing.Color.Green;
+            series8.Legend = "Legend1";
+            series8.Name = "Layer4";
+            this.chartErrors.Series.Add(series5);
+            this.chartErrors.Series.Add(series6);
+            this.chartErrors.Series.Add(series7);
+            this.chartErrors.Series.Add(series8);
+            this.chartErrors.Size = new System.Drawing.Size(404, 284);
             this.chartErrors.TabIndex = 18;
             this.chartErrors.Text = "Błędy";
             // 
             // buttonLoadNetwork
             // 
-            this.buttonLoadNetwork.Location = new System.Drawing.Point(180, 26);
-            this.buttonLoadNetwork.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonLoadNetwork.Location = new System.Drawing.Point(135, 21);
+            this.buttonLoadNetwork.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonLoadNetwork.Name = "buttonLoadNetwork";
-            this.buttonLoadNetwork.Size = new System.Drawing.Size(137, 34);
+            this.buttonLoadNetwork.Size = new System.Drawing.Size(103, 28);
             this.buttonLoadNetwork.TabIndex = 19;
             this.buttonLoadNetwork.Text = "Wczytaj sieć";
             this.buttonLoadNetwork.UseVisualStyleBackColor = true;
@@ -138,8 +139,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(4, 4);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(557, 346);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -153,23 +153,37 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel_pictureBox.AutoScroll = true;
             this.panel_pictureBox.Controls.Add(this.pictureBox1);
-            this.panel_pictureBox.Location = new System.Drawing.Point(586, 94);
+            this.panel_pictureBox.Location = new System.Drawing.Point(440, 76);
+            this.panel_pictureBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel_pictureBox.Name = "panel_pictureBox";
-            this.panel_pictureBox.Size = new System.Drawing.Size(565, 350);
+            this.panel_pictureBox.Size = new System.Drawing.Size(424, 284);
             this.panel_pictureBox.TabIndex = 21;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(505, 21);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Name = "button1";
+            this.button1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.button1.Size = new System.Drawing.Size(103, 28);
+            this.button1.TabIndex = 22;
+            this.button1.Text = "Zapisz - 0/9";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // mainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1163, 454);
+            this.ClientSize = new System.Drawing.Size(872, 369);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.panel_pictureBox);
             this.Controls.Add(this.buttonLoadNetwork);
             this.Controls.Add(this.chartErrors);
             this.Controls.Add(this.buttonTest);
             this.Controls.Add(this.buttonTrain);
             this.Controls.Add(this.buttonGetInputFile);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "mainForm";
             this.Text = "Autoencoder";
             ((System.ComponentModel.ISupportInitialize)(this.chartErrors)).EndInit();
@@ -190,6 +204,7 @@
         private System.Windows.Forms.Button buttonLoadNetwork;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panel_pictureBox;
+        private System.Windows.Forms.Button button1;
     }
 }
 

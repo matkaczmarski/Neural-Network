@@ -11,12 +11,12 @@ namespace SatelliteImageClassification
     class SegmentationData
     {
         private static Random rand = new Random();
-        public static int MAX_SEGMENT_SIZE = 20;
+        public static int MAX_SEGMENT_SIZE = 50;
         public static int SEGMENT_NEIGHBOURS = 4;
 
         private SegmentationData() { }
 
-        public static TrainingData GetTrainingData(string pathToOriginals, string pathToSegments, string pathToBuildings, out Bitmap originalImageRes)
+        public static TrainingData GetTrainingData(string pathToOriginals, string pathToSegments, string pathToBuildings, out Bitmap originalImageRes, int iteration)
         {
             TrainingData trainingData = new TrainingData();
             originalImageRes = null;
@@ -37,6 +37,8 @@ namespace SatelliteImageClassification
             
             for (int i = 0; i < originals.Length; i++)
             {
+                if (i != iteration - 1)
+                    continue;
                 Dictionary<int, SegmentData> nrOfElementsInSegment = new Dictionary<int, SegmentData>();
                 int[,] matrix = null;
                 int average = int.MaxValue;

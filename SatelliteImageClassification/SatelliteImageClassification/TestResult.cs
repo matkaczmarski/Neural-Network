@@ -23,5 +23,30 @@ namespace SatelliteImageClassification
         public int WrongTerrainPixels { get; set; }
         public int TruePositiveBuildings { get; set; }
         public int TruePositiveTerrain { get; set; }
+
+        public int TP { get; set; }
+        public int FP { get; set; }
+        public int TN { get; set; }
+        public float DP
+        {
+            get
+            {
+                if (TP + TN != 0)
+                    return 100 * (float)TP / ((float)TP + (float)TN);
+                else
+                    return 100;
+            }
+        }
+        public float BF
+        {
+            get
+            {
+                if (TP + FP != 0)
+                    return 100 * (float)FP / ((float)TP + (float)FP);
+                else
+                    return 0;
+            }
+        }
+
     }
 }
