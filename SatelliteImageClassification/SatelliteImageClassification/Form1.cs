@@ -236,13 +236,13 @@ namespace SatelliteImageClassification
             this.pictureBox1.Image = originalImage;
             
             TestResult res = TestResultBitmap(resultBitmap, training.SegmentsImage);
-            /*ImageForm if1 = new ImageForm(resultBitmap);
+            ImageForm if1 = new ImageForm(resultBitmap);
             if1.Text = "Result";
             if1.Show();
 
             ImageForm if2 = new ImageForm(training.SegmentsImage);
             if2.Text = "Ideal";
-            if2.Show();*/
+            if2.Show();
 
             testResults.Add(res);
             button1.Text = "Zapisz " + (iteration - 1) + "/9";
