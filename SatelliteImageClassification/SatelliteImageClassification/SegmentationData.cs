@@ -63,11 +63,13 @@ namespace SatelliteImageClassification
 
                 List<Point> points;
                 List<Bitmap> segmentsImages;
-                Tuple<List<double[]>, List<double[]>> result = LoadSegments(originalImage, buildingsImage, matrix, nrOfElementsInSegment, average, out points, out segmentsImages);
+                List<int> parentsID;
+                Tuple<List<double[]>, List<double[]>> result = LoadSegments(originalImage, buildingsImage, matrix, nrOfElementsInSegment, average, out points, out segmentsImages, out parentsID);
                 trainingData.Positions = points.ToArray();
                 trainingData.Segments = segmentsImages.ToArray();
                 trainingData.OriginalImage = originalImage;
                 trainingData.SegmentsImage = buildingsImage;
+                trainingData.ParentID = parentsID.ToArray();
                 segmentsList.AddRange(result.Item1);
                 idealList.AddRange(result.Item2);
             }
@@ -143,13 +145,14 @@ namespace SatelliteImageClassification
 
             return generatedImage;
         }
-        private static Tuple<List<double[]>, List<double[]>> LoadSegments(Bitmap sourceImage, Bitmap buildingsImage, int[,] matrix, Dictionary<int, SegmentData> nrOfElementsInSegment, int average, out List<Point> positions, out List<Bitmap> segmentsImages)
+        private static Tuple<List<double[]>, List<double[]>> LoadSegments(Bitmap sourceImage, Bitmap buildingsImage, int[,] matrix, Dictionary<int, SegmentData> nrOfElementsInSegment, int average, out List<Point> positions, out List<Bitmap> segmentsImages, out List<int> parentsID)
         {
             List<double[]> segments = new List<double[]>();
             List<double[]> ideal = new List<double[]>();
 
             positions = new List<Point>();
             segmentsImages = new List<Bitmap>();
+            parentsID = new List<int>();
 
             foreach (KeyValuePair<int, SegmentData> elem in nrOfElementsInSegment)
             {
@@ -284,6 +287,7 @@ namespace SatelliteImageClassification
 
                         segmentsImages.Add(GetBitmapFromDoubleArray(subSegment));
                         positions.Add(position);
+                        parentsID.Add(elem.Key);
 
                         /*if (isBuilding > isSomethingElse)
                         {
@@ -320,6 +324,7 @@ namespace SatelliteImageClassification
 
                     segmentsImages.Add(GetBitmapFromDoubleArray(segment));
                     positions.Add(position);
+                    parentsID.Add(elem.Key);
                 }
             }
             Tuple<List<double[]>, List<double[]>> result = new Tuple<List<double[]>, List<double[]>>(segments, ideal);

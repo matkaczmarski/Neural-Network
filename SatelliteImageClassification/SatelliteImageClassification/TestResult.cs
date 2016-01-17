@@ -8,6 +8,7 @@ namespace SatelliteImageClassification
 {
     class TestResult
     {
+        public TestResult VoteResult { get; set; }
         public int CorrectPixels { get; set; }
         public int WrongPixels { get; set; }
         public string Percentage 

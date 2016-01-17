@@ -15,5 +15,6 @@ namespace SatelliteImageClassification
         public Bitmap SegmentsImage { get; set; }
         public Point[] Positions { get; set; }
         public Bitmap[] Segments { get; set; }
+        public int[] ParentID { get; set; }
     }
 }

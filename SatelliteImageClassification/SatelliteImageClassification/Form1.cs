@@ -139,11 +139,34 @@ namespace SatelliteImageClassification
         private void GenerateData()
         {
             string path = Directory.GetCurrentDirectory() + "\\";
-            SegmentationData.MAX_SEGMENT_SIZE = 6;
+            SegmentationData.MAX_SEGMENT_SIZE = 10;
             training = SegmentationData.GetTrainingData(path + "originals", path + "segments", path + "buildings", out originalImage, iteration++);
             trainingData = training.Vectors;
             idealData = training.Ideal;
             this.pictureBox1.Image = originalImage = training.OriginalImage;
+
+            //* Jaki procent pikseli jest wykorzystany do nauki - tytuł okna
+            /* 
+            Bitmap bmp_org = training.OriginalImage;
+            float pixels = bmp_org.Width * bmp_org.Height;
+            float train_pixels = 0;
+            for (int i = 0; i < training.Vectors.Length; i++)
+            {
+                var data = SegmentationData.CovertFrom1DArray(training.Vectors[i]);
+                for (int x = 0; x < data.GetLength(1); x++)
+                    for (int y = 0; y < data.GetLength(0); y++)
+                    if (data[x,y][0] != -1)
+                    {
+                        bmp_org.SetPixel(x + training.Positions[i].X, y + training.Positions[i].Y, Color.White);
+                        train_pixels++;
+                    }
+            }
+
+            ImageForm imageForm = new ImageForm(bmp_org);
+            imageForm.Text = ((train_pixels / pixels) * 100).ToString("0.00");
+            imageForm.ShowDialog();
+             */
+             //
 
             /*ImageForm imageForm = new ImageForm(training.OriginalImage);
             imageForm.Show();*/
@@ -198,8 +221,21 @@ namespace SatelliteImageClassification
                 for (int y = 0; y < resultBitmap.Height; y++)
                     resultBitmap.SetPixel(x, y, Color.White);
 
+            List<bool> isBuildingList = new List<bool>();
+            int count = 0;
+            int buildingSegmentsCount = 0;
+            int parentID = training.ParentID[0];
             for (int i = 0; i < testSet.Length; i++)
             {
+                if (training.ParentID[i] != parentID)
+                {
+                    for (int k = 0; k < count; k++)
+                        isBuildingList.Add((float)buildingSegmentsCount / (float)count > 0.3);
+                    buildingSegmentsCount = 0;
+                    count = 0;
+                    parentID = training.ParentID[i];
+                }
+                count++;
                 double[,][] segment = SegmentationData.CovertFrom1DArray(trainingData[i]);
                 int computedVal = (int)autoencoder.Compute(testSet[i]);
                 if (computedVal == 0)
@@ -214,7 +250,8 @@ namespace SatelliteImageClassification
                                 originalImage.SetPixel(x + training.Positions[i].X, y + training.Positions[i].Y, Color.FromArgb(50, 255, 255, 255));
                             }
                         }
-                    } 
+                    }
+                    buildingSegmentsCount++;
                 }
                 if (computedVal != testResult[i])
                 {
@@ -233,16 +270,47 @@ namespace SatelliteImageClassification
                 }
                  * */
             }
+            for (int k = 0; k < count; k++)
+                isBuildingList.Add((float)buildingSegmentsCount / (float)count > 0.4);
             this.pictureBox1.Image = originalImage;
-            
             TestResult res = TestResultBitmap(resultBitmap, training.SegmentsImage);
-            /*ImageForm if1 = new ImageForm(resultBitmap);
+
+            ImageForm if1 = new ImageForm(resultBitmap);
             if1.Text = "Result";
             if1.Show();
 
-            ImageForm if2 = new ImageForm(training.SegmentsImage);
-            if2.Text = "Ideal";
-            if2.Show();*/
+            resultBitmap = new Bitmap(training.OriginalImage.Width, training.OriginalImage.Height);
+            for (int x = 0; x < resultBitmap.Width; x++)
+                for (int y = 0; y < resultBitmap.Height; y++)
+                    resultBitmap.SetPixel(x, y, Color.White);
+            for (int i = 0; i < training.Segments.Count(); i++)
+            {
+                if (isBuildingList[i])
+                {
+                    double[,][] segment = SegmentationData.CovertFrom1DArray(trainingData[i]);
+                    for (int x = 0; x < training.Segments[i].Width; x++)
+                    {
+                        for (int y = 0; y < training.Segments[i].Height; y++)
+                        {
+                            if (segment[x, y][0] >= 0)
+                                resultBitmap.SetPixel(x + training.Positions[i].X, y + training.Positions[i].Y, Color.Red);
+                        }
+                    }
+                }
+            }
+
+            ImageForm if2 = new ImageForm(resultBitmap);
+            if2.Text = "Result vote";
+            if2.Show();
+
+            res.VoteResult = TestResultBitmap(resultBitmap, training.SegmentsImage);
+            /*ImageForm if1 = new ImageForm(resultBitmap);
+            if1.Text = "Result";
+            if1.Show();*/
+
+            ImageForm if3 = new ImageForm(training.SegmentsImage);
+            if3.Text = "Ideal";
+            if3.Show();
 
             testResults.Add(res);
             button1.Text = "Zapisz " + (iteration - 1) + "/9";
@@ -327,6 +395,7 @@ namespace SatelliteImageClassification
                 foreach (TestResult ts in testResults)
                 {
                     tw.WriteLine();
+                    tw.WriteLine("------------------------------- NO VOTE -------------------------------");
                     tw.WriteLine("#" + i);
                     tw.WriteLine();
                     tw.WriteLine("TP = " + ts.TP);
@@ -334,6 +403,16 @@ namespace SatelliteImageClassification
                     tw.WriteLine("FP = " + ts.FP);
                     tw.WriteLine("DP = " + ts.DP.ToString("0.00"));
                     tw.WriteLine("BF = " + ts.BF.ToString("0.00"));
+                    tw.WriteLine();
+
+                    tw.WriteLine("------------------------------- VOTE -------------------------------");
+                    tw.WriteLine("#" + i);
+                    tw.WriteLine();
+                    tw.WriteLine("TP = " + ts.VoteResult.TP);
+                    tw.WriteLine("TN = " + ts.VoteResult.TN);
+                    tw.WriteLine("FP = " + ts.VoteResult.FP);
+                    tw.WriteLine("DP = " + ts.VoteResult.DP.ToString("0.00"));
+                    tw.WriteLine("BF = " + ts.VoteResult.BF.ToString("0.00"));
                     tw.WriteLine();
 
                     i++;
